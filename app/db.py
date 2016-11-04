@@ -44,6 +44,7 @@ if __name__ == '__main__':
         'hora':datetime.strftime(datetime.now(), '%H:%M:%S'),
     }
 
+    #results = medicos.find(_limit=10,_offset=1)
     medicos.insert(medico_values)
     pacientes.insert(paciente_values)
     agendamentos.insert(agendamento_values)

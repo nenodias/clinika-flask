@@ -1,41 +1,49 @@
 # projeto-luiz
 
-- Cadastro médico
-Nome
-Número do CRM
-Status (ativo e inativo)
-Especialidade
-Área de atuação
-Endereço (rua, número, cidade e estado)
-Telefone
-CPF
-- Consulta médico
-Nome
-Especialidade
+1. Cadastro de agendamento 
+- Nome do médico (obrigatório) 
+- Nome do paciente (obrigatório) 
+- Telefone - Data (obrigatório) 
+- Hora (obrigatório)
 
-- Cadastro paciente
-Nome
-Endereço (rua, número, cidade e estado)
-Telefone
-CPF
-Plano (sem plano, parcial ou cobertura total)
-- Consulta paciente
-Nome
-CPF
+2. Cadastro de especialidade 
+- Nome da especialidade (obrigatório) 
+- Situação: ativo e inativo3. Tela: Cadastro médico 
+- Nome (obrigatório) 
+- CPF 
+- CRM (obrigatório) 
+- Especialidade (obrigatório) 
+- Área de atuação 
+- Enredeço 
+- Estado 
+- Cidade 
+- Telefone (obrigatório) 
+- Situação
 
-- Agendamento
-Nome do médico (usar id)
-Nome do paciente (usar id)
-Data
-Hora
-Telefone paciente
-- Consulta
-Data
-Nome do médico
-Nome do paciente
-cpf do paciente
-crm médico
+4. Cadastro de paciente 
+- Nome (obrigatório) 
+- CPF 
+- Telefone (obrigatório) 
+- Endereço 
+- Plano 
+- Nome do plano
 
-- tela de login
-usuário
-senha
+5. Consulta de agendamento
+- Nome do médico
+- Nome do paciente
+- Data
+
+6. Consulta de especialidade
+- Nome da especialidade
+- Situação
+
+7. Consulta de médico
+- Nome-Especialidade
+
+8. Consulta de paciente
+- Nome
+- CPF
+
+9. Login
+- Usuário
+- Senha

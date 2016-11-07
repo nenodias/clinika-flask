@@ -8,7 +8,8 @@
 
 2. Cadastro de especialidade 
     - Nome da especialidade (obrigatório) 
-    - Situação: ativo e inativo3. Tela: Cadastro médico 
+    - Situação: ativo e inativo
+3. Tela: Cadastro médico 
     - Nome (obrigatório) 
     - CPF 
     - CRM (obrigatório) 

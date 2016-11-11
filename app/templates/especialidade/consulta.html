@@ -39,6 +39,7 @@
                 </div>
             </fieldset>
         </form>
+        <hr />
         <table class="table table-bordered table-striped">
             <thead class="thead-inverse">
                 <tr>
@@ -52,6 +53,8 @@
                 
             </tbody>
         </table>
+        <div class="div-paginacao">
+        </div>
         <template id="linha-template">
             <tr>
                 <td>[{id}]</td>
@@ -63,25 +66,52 @@
                 </td>
             </tr>
         </template>
+        <template id="paginacao-template">
+            <nav aria-label="...">
+              <ul class="pager">
+                <li><a href="#" class="[{prev}]" data-target="-1">Previous</a></li>
+                <li><a href="#" class="[{prev}]" data-target="+1">Next</a></li>
+                <li class="pull-right">Total: [{count}]</li>
+              </ul>
+            </nav>
+        </template>
         <script type="text/javascript">
             var limit = 10;
             var offset = 0;
-            var buscarEspecialidades = function(){
+            var carregarDados = function(){
                 var dados = $('form').serialize();
+                $.ajax({
+                    url:'{{ url_for("especialidade.count") }}',
+                    data: dados,
+                    method:'get',
+                    dataType: 'json',
+                    success:function(retorno){                        
+                        $('.div-paginacao').html('');
+                        var template = _.template( $("#paginacao-template").html() );
+                        var _count = parseInt(retorno['count']);
+                        var _offset = parseInt($('#offset').val());
+                        var _limit = parseInt($('#limit').val());
+                        var _max_page = _count /_limit;
+                        _max_page = (_count % _limit != 0)? _max_page + 1: _max_page;
+                        retorno['prev'] = _offset == 0 ? 'disabled' : '';
+                        retorno['next'] = _offset == _max_page ? 'disabled' : '';
+                        $('.div-paginacao').append( template(retorno) );
+                    }
+                });
                 $.ajax({
                     url:'{{ url_for("especialidade.ajax") }}',
                     data: dados,
                     method:'get',
                     dataType: 'json',
                     success:function(retorno){
-                        $('dados-tabela').html('');
+                        $('.dados-tabela').html('');
                         var template = _.template( $("#linha-template").html() );
                         _.each(retorno, function(linha){
                             var html = template(linha);
                             $('.dados-tabela').append(html);
                         });
                     }
-                })
+                });
             };
 
             var eventoExcluir = function(){
@@ -97,10 +127,22 @@
                     }
                 });
             };
+            var eventoPage = function(event){
+                var target = event.target;
+                if($(target).hasClass('disabled')){
+                    event.preventDefault();
+                }else{
+                    var _offset = parseInt( $("#offset").val() );
+                    _offset += parseInt( $(target).data('target') );
+                    $("#offset").val(_offset);
+                    carregarDados();
+                }
+            }
             $(document).ready(function(){
-                buscarEspecialidades();
-                $("#btnPesquisar").click(buscarEspecialidades);
+                carregarDados();
+                $("#btnPesquisar").click(carregarDados);
                 $('table').on('click','.btn-danger', eventoExcluir);
+                $('table').on('click','.pager a', eventoPage);
             });
         </script>
 {% endblock %}

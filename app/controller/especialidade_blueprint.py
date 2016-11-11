@@ -49,6 +49,29 @@ def ajax():
         print(ex)
     return jsonify( items )
 
+@especialidade_blueprint.route('/count', methods = ['get'])
+def count():
+    _descricao = request.args.get('descricao', '')
+    _status = request.args.get('status', '')
+    items = []
+    params = {}
+    sql = 'SELECT COUNT(1) as count FROM {0} WHERE 1 = 1 '.format(_table.table.name)
+    if _descricao:
+        params['descricao'] = '%'+_descricao+'%'
+        sql += ' AND descricao like :descricao '
+    if _status:
+        params['status'] = _status
+        sql += ' AND status = :status '
+    try:
+        fetch = db.engine.execute(sql, params)
+        colunas = fetch.keys()
+        for dado in fetch:
+            item = dict(zip(colunas, dado))
+            items.append( item )
+    except Exception as ex:
+        print(ex)
+    return jsonify( items[0] )
+
 @especialidade_blueprint.route('/ajax/<pk>', methods = ['get'])
 def ajax_by_id(pk):
     data = _table.find_one(id=id)

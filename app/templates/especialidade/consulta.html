@@ -59,7 +59,7 @@
                 <td>[{status}]</td>
                 <td>
                     <a class="btn btn-warning" href="{{url_for("especialidade.form")}}[{id}]">Editar</a>
-                    <a class="btn btn-danger" href="{{url_for("especialidade.delete",pk='')}}[{id}]">Excluir</a>
+                    <a class="btn btn-danger" href="#" data-target="{{url_for("especialidade.delete",pk='')}}[{id}]">Excluir</a>
                 </td>
             </tr>
         </template>
@@ -83,9 +83,24 @@
                     }
                 })
             };
+
+            var eventoExcluir = function(){
+                var btn = $(this);
+                bootbox.confirm("Deseja excluir esse registro?", function(result) {
+                    if(result){
+                        $.post(btn.data('target'),function(data){
+                            bootbox.alert('Registro excluído com sucesso!');
+                            window.location.reload();
+                        }).fail(function(){
+                            bootbox.alert('Erro ao excluir registro!');
+                        });
+                    }
+                });
+            };
             $(document).ready(function(){
                 buscarEspecialidades();
                 $("#btnPesquisar").click(buscarEspecialidades);
+                $('table').on('click','.btn-danger', eventoExcluir);
             });
         </script>
 {% endblock %}

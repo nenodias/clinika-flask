@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pdb import set_trace
 from flask import (Blueprint, render_template, request, redirect, url_for, flash, 
     jsonify, render_template)
 from app.db import db, especialidades as _table
@@ -12,7 +13,36 @@ def index():
 @especialidade_blueprint.route('/form/', defaults={'pk':None}, methods = ['post', 'get'])
 @especialidade_blueprint.route('/form/<pk>', methods = ['post', 'get'])
 def form(pk):
-    return render_template('especialidade/cadastro.html')
+    #Pega os dados dos campos na tela
+    contexto = {}
+    contexto['model'] = {}
+    contexto['tupla_status'] = ( (None, 'Selecionar'),(True, 'Ativo'),(False, 'Desativado'))
+    set_trace()
+    if request.method == 'POST':
+        descricao = request.form.get("descricao")
+        status = request.form.get("status")
+      
+        #Criar dicionário com os dados
+        dicionario = {
+            "descricao":descricao,
+            "status": bool(status),
+        }
+        mensagem = None
+        try:
+            if pk:
+                dicionario['id'] = pk
+                id_cadastro = _table.update(dicionario,['id'])
+                contexto['mensagem'] = u'Especialidade {0} atualizada com sucesso'
+            else:
+                id_cadastro = _table.insert(dicionario,['id'])
+                contexto['mensagem'] = u'Especialidade {0} cadastrada com sucesso'
+        except:
+            contexto['mensagem'] = u'Erro ao cadastrar especialidade'
+    elif pk:
+        data = _table.find_one(id=pk)
+        contexto['model'] = dict(data)
+        print(contexto['model'])
+    return render_template('especialidade/cadastro.html', **contexto)
 
 
 @especialidade_blueprint.route('/delete/<pk>', methods = ['post'])

@@ -11,7 +11,7 @@ def index():
 
 @especialidade_blueprint.route('/form/', defaults={'pk':None}, methods = ['post', 'get'])
 @especialidade_blueprint.route('/form/<pk>', methods = ['post', 'get'])
-def form():
+def form(pk):
     return render_template('especialidade/cadastro.html')
 
 

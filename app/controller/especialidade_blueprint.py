@@ -16,8 +16,7 @@ def form(pk):
     #Pega os dados dos campos na tela
     contexto = {}
     contexto['model'] = {}
-    contexto['tupla_status'] = ( (None, 'Selecionar'),(True, 'Ativo'),(False, 'Desativado'))
-    set_trace()
+    contexto['tupla_status'] = ( (None, 'Selecionar'),(True, 'Ativo'),(False, 'Desativado') )
     if request.method == 'POST':
         descricao = request.form.get("descricao")
         status = request.form.get("status")

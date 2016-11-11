@@ -8,7 +8,7 @@ from especialidade_blueprint import especialidade_blueprint
 
 @app.route('/')
 def index():
-    return render_template('medico/cadastro.html'), 200
+    return render_template('index.html'), 200
 
 app.register_blueprint(medico_blueprint, url_prefix='/medico')
 app.register_blueprint(paciente_blueprint, url_prefix='/paciente')

@@ -8,7 +8,15 @@ especialidade_blueprint = Blueprint('especialidade', __name__)
 
 @especialidade_blueprint.route('/')
 def index():
-    return render_template('especialidade/consulta.html')
+    contexto = {}
+    _descricao = request.args.get('descricao', '')
+    _status = request.args.get('status', '')
+    contexto['tupla_status'] = ( ('', 'Selecionar'),(True, 'Ativo'),(False, 'Desativado') )
+    contexto['model'] = {
+        'descricao':_descricao,
+        'status':_status
+    }
+    return render_template('especialidade/consulta.html', **contexto)
 
 @especialidade_blueprint.route('/form/', defaults={'pk':None}, methods = ['post', 'get'])
 @especialidade_blueprint.route('/form/<pk>', methods = ['post', 'get'])
@@ -16,7 +24,7 @@ def form(pk):
     #Pega os dados dos campos na tela
     contexto = {}
     contexto['model'] = {}
-    contexto['tupla_status'] = ( (None, 'Selecionar'),(True, 'Ativo'),(False, 'Desativado') )
+    contexto['tupla_status'] = ( ('', 'Selecionar'),(True, 'Ativo'),(False, 'Desativado') )
     if request.method == 'POST':
         descricao = request.form.get("descricao")
         status = request.form.get("status")
@@ -65,7 +73,7 @@ def ajax():
         params['descricao'] = '%'+_descricao+'%'
         sql += ' AND descricao like :descricao '
     if _status:
-        params['status'] = _status
+        params['status'] = int(_status)
         sql += ' AND status = :status '
     sql += ' LIMIT {offset},{limit}'.format(offset=_offset, limit=_limit)
     try:

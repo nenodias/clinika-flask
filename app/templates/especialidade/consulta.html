@@ -14,7 +14,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="searchEspecialidade">Nome da especialidade</label>
                     <div class="col-md-5">
-                        <input id="descricao" name="descricao" type="search" placeholder="Informe a especialdade" class="form-control input-md">
+                        <input id="descricao" name="descricao" type="search" placeholder="Informe a especialdade" class="form-control input-md" value="{{ model['descricao'] }}">
                     </div>
                 </div>
 
@@ -23,9 +23,13 @@
                     <label class="col-md-4 control-label" for="status">Situação</label>
                     <div class="col-md-4">
                         <select id="status" name="status" class="form-control">
-                            <option value="1">Selecione</option>
-                            <option value="2">Ativo</option>
-                            <option value="3">Inativo</option>
+                            {% for item in tupla_status %}
+                                <option value="{{ item[0] }}"
+                                {{ 'selected="selected"' if (item[0] == model['status']) }}
+                                >
+                                  {{ item[1] }}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -34,7 +38,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="btnPesquisar"></label>
                     <div class="col-md-8">
-                        <button id="btnPesquisar" class="btn btn-primary">Pesquisar</button>
+                        <button type="button" id="btnPesquisar" class="btn btn-primary">Pesquisar</button>
                     </div>
                     <div class="col-md-12">
                         <a class="btn btn-default" role="button" href="{{ url_for('especialidade.form',pk=None)}}">Inserir</a>

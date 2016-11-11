@@ -80,38 +80,44 @@
             var offset = 0;
             var carregarDados = function(){
                 var dados = $('form').serialize();
-                $.ajax({
+                var d_count = $.ajax({
                     url:'{{ url_for("especialidade.count") }}',
                     data: dados,
                     method:'get',
-                    dataType: 'json',
-                    success:function(retorno){                        
-                        $('.div-paginacao').html('');
-                        var template = _.template( $("#paginacao-template").html() );
-                        var _count = parseInt(retorno['count']);
-                        var _offset = parseInt($('#offset').val());
-                        var _limit = parseInt($('#limit').val());
-                        var _max_page = _count /_limit;
-                        _max_page = (_count % _limit != 0)? _max_page + 1: _max_page;
-                        retorno['prev'] = _offset == 0 ? 'disabled' : '';
-                        retorno['next'] = _offset == _max_page ? 'disabled' : '';
-                        $('.div-paginacao').append( template(retorno) );
-                    }
+                    dataType: 'json'
                 });
-                $.ajax({
+                var d_dados = $.ajax({
                     url:'{{ url_for("especialidade.ajax") }}',
                     data: dados,
                     method:'get',
-                    dataType: 'json',
-                    success:function(retorno){
-                        $('.dados-tabela').html('');
-                        var template = _.template( $("#linha-template").html() );
-                        _.each(retorno, function(linha){
-                            var html = template(linha);
-                            $('.dados-tabela').append(html);
-                        });
-                    }
+                    dataType: 'json'
                 });
+                $.when(d_count,d_dados).then(function(r_count, retorno){
+                    //Atualizando paginação
+                    var retorno_count = r_count[0];
+                    $('.div-paginacao').html('');
+                    var template = _.template( $("#paginacao-template").html() );
+                    var _count = parseInt(retorno_count['count']);
+                    var _offset = parseInt($('#offset').val());
+                    var _limit = parseInt($('#limit').val());
+                    var _max_page = _count /_limit;
+                    _max_page = (_count % _limit != 0)? _max_page + 1: _max_page;
+                    retorno_count['prev'] = _offset == 0 ? 'disabled' : '';
+                    retorno_count['next'] = _offset == _max_page ? 'disabled' : '';
+                    $('.div-paginacao').append( template(retorno_count) );
+                    //Fim da paginação
+
+                    //Atualizando Tabela
+                    var dados = retorno[0];
+                    $('.dados-tabela').html('');
+                    var template = _.template( $("#linha-template").html() );
+                    _.each(dados, function(linha){
+                        var html = template(linha);
+                        $('.dados-tabela').append(html);
+                    });
+                    //Fim da Atualizacao da Tabela
+
+                })
             };
 
             var eventoExcluir = function(){

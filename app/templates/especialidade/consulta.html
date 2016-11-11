@@ -1,37 +1,28 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Controle de consulta</title>
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-            </head>
-    <body class="container">
+{% extends 'layout.html' %}
+{% block title %}Consulta de Especialidade{% endblock %}
+{% block content %}
         <form class="form-horizontal">
             <fieldset>
 
                 <!-- Form Name -->
                 <legend>Consulta de especialidade</legend>
+                
+                <input type="hidden" id="limit" name="limit" value="10" />
+                <input type="hidden" id="offset" name="offset" value="0" />
 
                 <!-- Search input-->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="searchEspecialidade">Nome da especialidade</label>
                     <div class="col-md-5">
-                        <input id="searchEspecialidade" name="searchEspecialidade" type="search" placeholder="Informe a especialdade" class="form-control input-md">
+                        <input id="descricao" name="descricao" type="search" placeholder="Informe a especialdade" class="form-control input-md">
                     </div>
                 </div>
 
                 <!-- Select Basic -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="selectbasicSituacao">Situação</label>
+                    <label class="col-md-4 control-label" for="status">Situação</label>
                     <div class="col-md-4">
-                        <select id="selectbasicSituacao" name="selectbasicSituacao" class="form-control">
+                        <select id="status" name="status" class="form-control">
                             <option value="1">Selecione</option>
                             <option value="2">Ativo</option>
                             <option value="3">Inativo</option>
@@ -41,13 +32,60 @@
 
                 <!-- Button (Double) -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="btnSalvar"></label>
+                    <label class="col-md-4 control-label" for="btnPesquisar"></label>
                     <div class="col-md-8">
-                        <button id="btnSalvar" name="btnSalvar" class="btn btn-success">Salvar</button>
-                        <button id="btnCancelar" name="btnCancelar" class="btn btn-danger">Cancelar</button>
+                        <button id="btnPesquisar" class="btn btn-primary">Pesquisar</button>
                     </div>
                 </div>
             </fieldset>
         </form>
-    </body>
-</html>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>Id</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="dados-tabela">
+                
+            </tbody>
+        </table>
+        <template id="linha-template">
+            <tr>
+                <td>[{id}]</td>
+                <td>[{descricao}]</td>
+                <td>[{status}]</td>
+                <td>
+                    <a class="btn btn-warning" href="{{url_for("especialidade.form")}}[{id}]">Editar</a>
+                    <a class="btn btn-danger" href="{{url_for("especialidade.delete",pk='')}}[{id}]">Excluir</a>
+                </td>
+            </tr>
+        </template>
+        <script type="text/javascript">
+            var limit = 10;
+            var offset = 0;
+            var buscarEspecialidades = function(){
+                var dados = $('form').serialize();
+                $.ajax({
+                    url:'{{ url_for("especialidade.ajax") }}',
+                    data: dados,
+                    method:'get',
+                    dataType: 'json',
+                    success:function(retorno){
+                        $('dados-tabela').html('');
+                        var template = _.template( $("#linha-template").html() );
+                        _.each(retorno, function(linha){
+                            var html = template(linha);
+                            $('.dados-tabela').append(html);
+                        });
+                    }
+                })
+            };
+            $(document).ready(function(){
+                buscarEspecialidades();
+                $("#btnPesquisar").click(buscarEspecialidades);
+            });
+        </script>
+{% endblock %}

@@ -6,6 +6,25 @@ from app import db
 medico_blueprint = Blueprint('medico', __name__)
 
 @medico_blueprint.route('/')
+def index():
+    return render_template('medico/consulta.html')
+
+@medico_blueprint.route('/form/', defaults={'pk':None}, methods = ['post', 'get'])
+@medico_blueprint.route('/form/<pk>', methods = ['post', 'get'])
+def form():
+    return render_template('medico/cadastro.html')
+
+
+
+
+
+
+
+
+
+medico_rest_blueprint = Blueprint('medico_rest', __name__)
+
+@medico_rest_blueprint.route('/')
 def ajax_list():
     _limit = int(request.args.get('limit','10'))
     _offset = int(request.args.get('offset','0'))
@@ -40,7 +59,7 @@ def ajax_list():
     }
     return jsonify( data )
 
-@medico_blueprint.route('/', methods=['POST'])
+@medico_rest_blueprint.route('/', methods=['POST'])
 def ajax_post():
     _table = db.medicos
     data = request.form.to_dict()
@@ -53,7 +72,7 @@ def ajax_post():
         return jsonify(data), 200
     return '',404
 
-@medico_blueprint.route('/<id>', methods=['GET'])
+@medico_rest_blueprint.route('/<id>', methods=['GET'])
 def ajax_get(id):
     _table = db.medicos
     data = _table.find_one(id=id)
@@ -61,7 +80,7 @@ def ajax_get(id):
         return jsonify(data), 200
     return '',404
 
-@medico_blueprint.route('/<id>', methods=['PUT'])
+@medico_rest_blueprint.route('/<id>', methods=['PUT'])
 def ajax_put(id):
     _table = db.medicos
     data = _table.find_one(id=id)
@@ -73,7 +92,7 @@ def ajax_put(id):
         return jsonify(data), 200
     return '',404
 
-@medico_blueprint.route('/<id>', methods=['DELETE'])
+@medico_rest_blueprint.route('/<id>', methods=['DELETE'])
 def ajax_delete(id):
     _table = db.medicos
     data = _table.find_one(id=id)

@@ -1,18 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Controle de consulta</title>
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-            </head>
-    <body class="container">
+{% extends 'layout.html' %}
+{% block title %}Cadastro de Médicos{% endblock %}
+{% block content %}
         <form class="form-horizontal">
             <fieldset>
 
@@ -51,7 +39,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="selectbasicEspecialidade">* Especialidade:</label>
                     <div class="col-md-2">
-                        <select id="selectbasicEspecialidade" name="selectbasicEspecialidade"   class="form-control" required="">
+                        <input type="text" id="selectbasicEspecialidade" name="selectbasicEspecialidade"   class="form-control" required="">
                         </select>
                     </div>
                 </div>
@@ -146,6 +134,60 @@
                     </div>
                 </div>
             </fieldset>
-        </form>    
-    </body>
-</html>
+        </form>
+        <script type="text/javascript">
+      $("#selectbasicEspecialidade").selectSearch({
+        findSearch:function(search, limit, offset){
+            var d1 = $.Deferred();
+            if(offset == 0){
+                d1.resolve(
+                    [
+                        {'valor':'1','descricao':'Item 1'},
+                        {'valor':'2','descricao':'Item 2'},
+                        {'valor':'3','descricao':'Item 3'},
+                        {'valor':'4','descricao':'Item 4'},
+                        {'valor':'5','descricao':'Item 5'},
+                        {'valor':'6','descricao':'Item 6'},
+                        {'valor':'6','descricao':'Item 7'},
+                        {'valor':'6','descricao':'Item 8'},
+                        {'valor':'6','descricao':'Item 9'},
+                    ]
+                    );
+            }
+            if(offset == 1){
+                d1.resolve(
+                    [
+                        {'valor':'7','descricao':'Item 7'},
+                        {'valor':'8','descricao':'Item 8'},
+                        {'valor':'9','descricao':'Item 9'},
+                        {'valor':'10','descricao':'Item 10'}
+                    ]
+                    );
+            }
+            if(offset == 2){
+                d1.resolve(
+                    [
+                        {'valor':'11','descricao':'Item 11'},
+                        {'valor':'12','descricao':'Item 12'},
+                        {'valor':'13','descricao':'Item 13'},
+                        {'valor':'14','descricao':'Item 14'}
+                    ]
+                    );
+            }
+            return d1;
+        },
+        findById:function(id){
+            var d1 = $.Deferred();
+            d1.resolve({'valor':id,'descricao':'Item '+id});
+            return d1;
+        },
+          getDescription: function(data){
+              return data.descricao;
+          },
+          getValue: function(data){
+              return data.valor;
+          },
+          hideField:true
+      });
+      </script>    
+{% endblock %}

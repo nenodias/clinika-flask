@@ -3,11 +3,13 @@ import json
 from pdb import set_trace
 from flask import (Blueprint, render_template, request, redirect, url_for, flash, 
     jsonify, render_template, Response)
+from app import auth_require
 from app.db import db, especialidades as _table
 
 especialidade_blueprint = Blueprint('especialidade', __name__)
 
 @especialidade_blueprint.route('/')
+@auth_require()
 def index():
     contexto = {}
     _descricao = request.args.get('descricao', '')
@@ -21,6 +23,7 @@ def index():
 
 @especialidade_blueprint.route('/form/', defaults={'pk':None}, methods = ['post', 'get'])
 @especialidade_blueprint.route('/form/<pk>', methods = ['post', 'get'])
+@auth_require()
 def form(pk):
     #Pega os dados dos campos na tela
     contexto = {}
@@ -55,6 +58,7 @@ def form(pk):
 
 
 @especialidade_blueprint.route('/delete/<pk>', methods = ['post'])
+@auth_require()
 def delete(pk):
     data = _table.find_one(id=pk)
     if data:
@@ -63,6 +67,7 @@ def delete(pk):
     return '',404
 
 @especialidade_blueprint.route('/ajax', methods = ['get'])
+@auth_require()
 def ajax():
     _limit = int(request.args.get('limit','10'))
     _offset = int(request.args.get('offset','0'))
@@ -92,6 +97,7 @@ def ajax():
     return Response(response=json.dumps( items ), status=200, mimetype="application/json")
 
 @especialidade_blueprint.route('/count', methods = ['get'])
+@auth_require()
 def count():
     _descricao = request.args.get('descricao', '')
     _status = request.args.get('status', '')
@@ -115,6 +121,7 @@ def count():
     return Response(response=json.dumps( items[0] ), status=200, mimetype="application/json")
 
 @especialidade_blueprint.route('/ajax/<pk>', methods = ['get'])
+@auth_require()
 def ajax_by_id(pk):
     data = _table.find_one(id=pk)
     if data:

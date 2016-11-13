@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/search.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/app.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/bootbox.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/underscore.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/search.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block base %}
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -54,7 +40,7 @@
             </ul>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#contact">Sair</a></li>
+            <li><a href="{{ url_for('logout') }}">Sair</a></li>
           </ul>
         </div>
       </div>
@@ -78,5 +64,4 @@
         {% block content %}{% endblock %}
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

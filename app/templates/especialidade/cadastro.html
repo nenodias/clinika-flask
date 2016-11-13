@@ -13,22 +13,18 @@
             <!-- Text input-->
             <div class="form-group">
               <label class="col-md-4 control-label" for="descricao">* Nome da especialidade:</label>  
-              <div class="col-md-5">
-                <div class="input-group">
-                
+              <div class="col-md-5 input-group">
                   <span class="input-group-addon">
                     <span class="glyphicon">&#xe139;</span>
                   </span>
                   <input id="descricao" name="descricao" type="text" value="{{ model['descricao'] }}" placeholder="Informe a especialidade" class="form-control input-md" required="" />
-                </div>
               </div>
             </div>
 
             <!-- Select Basic -->
             <div class="form-group">
               <label class="col-md-4 control-label" for="selectbasicSituacao">Situação</label>
-              <div class="col-md-4">
-                <div class="input-group">
+              <div class="col-md-4 input-group">
                   <span class="input-group-addon">
                     <span class="glyphicon">&#xe055;</span>
                   </span>
@@ -41,7 +37,6 @@
                       </option>
                     {% endfor %}
                   </select>
-                </div>
               </div>
             </div>
 
@@ -49,8 +44,14 @@
             <div class="form-group">
               <label class="col-md-4 control-label" for="btnSalvar"></label>
               <div class="col-md-8">
-                <button id="btnSalvar" type="submit" class="btn btn-success">Salvar</button>
-                <a id="btnCancelar" type="button" class="btn btn-danger" href="{{ url_for('especialidade.index') }}">Cancelar</a>
+                <button id="btnSalvar" type="submit" class="btn btn-success">
+                <span class="glyphicon glyphicon-ok"></span>&nbsp;
+                Salvar
+                </button>
+                <a id="btnCancelar" type="button" class="btn btn-danger" href="{{ url_for('especialidade.index') }}">
+                <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                Cancelar
+                </a>
               </div>
             </div>
 

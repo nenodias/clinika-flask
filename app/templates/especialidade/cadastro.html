@@ -14,9 +14,13 @@
             <div class="form-group">
               <label class="col-md-4 control-label" for="descricao">* Nome da especialidade:</label>  
               <div class="col-md-5">
-              {{ model['descricao'] }}
-              <input id="descricao" name="descricao" type="text" value="{{ model['descricao'] }}" placeholder="Informe a especialidade" class="form-control input-md" required="" />
+                <div class="input-group">
                 
+                  <span class="input-group-addon">
+                    <span class="glyphicon">&#xe139;</span>
+                  </span>
+                  <input id="descricao" name="descricao" type="text" value="{{ model['descricao'] }}" placeholder="Informe a especialidade" class="form-control input-md" required="" />
+                </div>
               </div>
             </div>
 
@@ -24,15 +28,20 @@
             <div class="form-group">
               <label class="col-md-4 control-label" for="selectbasicSituacao">Situação</label>
               <div class="col-md-4">
-                <select id="status" name="status" class="form-control">
-                  {% for item in tupla_status %}
-                    <option value="{{ item[0] }}"
-                    {{ 'selected="selected"' if (item[0] == model['status']) }}
-                    >
-                      {{ item[1] }}
-                    </option>
-                  {% endfor %}
-                </select>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <span class="glyphicon">&#xe055;</span>
+                  </span>
+                  <select id="status" name="status" class="form-control input-md">
+                    {% for item in tupla_status %}
+                      <option value="{{ item[0] }}"
+                      {{ 'selected="selected"' if (item[0] == model['status']) }}
+                      >
+                        {{ item[1] }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
               </div>
             </div>
 

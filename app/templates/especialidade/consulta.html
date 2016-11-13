@@ -76,8 +76,8 @@
         <template id="paginacao-template">
             <nav aria-label="...">
               <ul class="pager">
-                <li><a href="#" class="[{prev}]" data-target="-1">Previous</a></li>
-                <li><a href="#" class="[{prev}]" data-target="+1">Next</a></li>
+                <li><a href="#paginacao-template" class="[{prev}]" data-target="-[{limit}]">Previous</a></li>
+                <li><a href="#paginacao-template" class="[{next}]" data-target="+[{limit}]">Next</a></li>
                 <li class="pull-right">Total: [{count}]</li>
               </ul>
             </nav>
@@ -108,9 +108,10 @@
                     var _offset = parseInt($('#offset').val());
                     var _limit = parseInt($('#limit').val());
                     var _max_page = _count /_limit;
-                    _max_page = (_count % _limit != 0)? _max_page + 1: _max_page;
+                    _max_page = parseInt(_count % _limit != 0)? _max_page + 1: _max_page;
                     retorno_count['prev'] = _offset == 0 ? 'disabled' : '';
-                    retorno_count['next'] = _offset == _max_page ? 'disabled' : '';
+                    retorno_count['next'] = (_offset + _limit)  >= _count ? 'disabled' : '';
+                    retorno_count['limit'] - _limit;
                     $('.div-paginacao').append( template(retorno_count) );
                     //Fim da paginação
 
@@ -155,7 +156,7 @@
                 carregarDados();
                 $("#btnPesquisar").click(carregarDados);
                 $('table').on('click','.btn-danger', eventoExcluir);
-                $('table').on('click','.pager a', eventoPage);
+                $('.div-paginacao').on('click','.pager a', eventoPage);
             });
         </script>
 {% endblock %}

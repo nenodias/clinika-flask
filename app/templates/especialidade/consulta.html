@@ -115,6 +115,15 @@
         <script type="text/javascript">
             var limit = 10;
             var offset = 0;
+
+            var getStatus = function(codigo){
+                var status = {  
+                    '{{ 1 if tupla_status[1][0] else '0' }}':'{{ tupla_status[1][1] }}',
+                    '{{ 1 if tupla_status[2][0] else '0' }}':'{{ tupla_status[2][1] }}',
+                };
+                return status[codigo];
+            }
+
             var carregarDados = function(){
                 var dados = $('form').serialize();
                 
@@ -154,6 +163,8 @@
                     $('.dados-tabela').html('');
                     var template = _.template( $("#linha-template").html() );
                     _.each(dados, function(linha){
+                        var status = linha['status'];
+                        linha['status'] = getStatus(status);
                         var html = template(linha);
                         $('.dados-tabela').append(html);
                     });

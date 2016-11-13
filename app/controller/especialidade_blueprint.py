@@ -80,7 +80,7 @@ def ajax():
         params['descricao'] = '%'+_descricao+'%'
         sql += ' AND descricao like :descricao '
     if _status:
-        params['status'] = int(_status)
+        params['status'] = 1 if _status == 'True' else 0
         sql += ' AND status = :status '
     
     sql += ' LIMIT :offset,:limit'

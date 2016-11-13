@@ -73,7 +73,7 @@
                 <td>[{id}]</td>
                 <td>[{nome}]</td>
                 <td>[{cpf}]</td>
-                <td>[{id_especialidade}]</td>
+                <td>[{especialidade}]</td>
                 <td>[{area}]</td>
                 <td>[{telefone}]</td>
                 <td>[{cidade}]</td>
@@ -114,6 +114,21 @@
         <script type="text/javascript">
             var limit = 10;
             var offset = 0;
+
+            var getEspecialidade = function(id){
+                var d1 = $.Deferred();
+                $.ajax({
+                    url:'{{ url_for("especialidade.ajax_by_id",pk='') }}'+id,
+                    method:'get',
+                    dataType: 'json'
+                }).done(function(data){
+                    d1.resolve(data.descricao);
+                }).fail(function(){
+                    d1.resolve('');
+                });
+                return d1;
+            };
+
             var carregarDados = function(){
                 var dados = $('form').serialize();
                 
@@ -153,8 +168,11 @@
                     $('.dados-tabela').html('');
                     var template = _.template( $("#linha-template").html() );
                     _.each(dados, function(linha){
-                        var html = template(linha);
-                        $('.dados-tabela').append(html);
+                        getEspecialidade(linha['id_especialidade']).done(function(especialidade){
+                            linha['especialidade'] = especialidade;
+                            var html = template(linha);
+                            $('.dados-tabela').append(html);
+                        });
                     });
                     //Fim da Atualizacao da Tabela
 

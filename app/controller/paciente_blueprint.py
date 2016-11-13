@@ -33,7 +33,7 @@ def form(pk):
     if request.method == 'POST':
         #Pega os dados dos campos na tela
         nome = request.form.get("nome")
-        cpf = int(request.form.get("cpf"))
+        cpf = request.form.get("cpf")
         telefone = request.form.get("telefone")
         plano = request.form.get("plano")
         rua = request.form.get("rua")
@@ -94,7 +94,7 @@ def ajax():
         params['nome'] = '%'+_nome+'%'
         sql += ' AND nome like :nome '
     if _cpf:
-        params['cpf'] = int(_cpf)
+        params['cpf'] = _cpf
         sql += ' AND cpf = :cpf '
     
     sql += ' LIMIT :offset,:limit'

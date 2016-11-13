@@ -7,187 +7,206 @@
                 <!-- Form Name -->
                 <legend>Cadastro de cliente</legend>
 
-                <!-- Alerta obrigatoriedade -->
-                <div class ="alert-info"></alert>Os campos sinalizados com asterisco (*) são obrigatórios.
-                </div><br><br>
+                {% if mensagem %}
+                <div class="alert alert-{{tipo_mensagem}}" role="alert">{{mensagem}}</div>
+                {% else %}
+
+                  <!-- Alerta obrigatoriedade -->
+                  <div class ="alert-info">Os campos sinalizados com asterisco (*) são obrigatórios.
+                  </div><br><br>
+
 
                 <!-- Text input-->
                 <div class="form-group">
-                <label class="col-md-4 control-label" for="txtnomeMedico">* Nome: </label>  
-                    <div class="col-md-6">
-                        <input id="txtnomeMedico" name="txtnomeMedico" type="text" placeholder="Informe o nome completo" class="form-control input-md" required="">
+                <label class="col-md-4 control-label" for="nome"><strong>* </strong> Nome: </label>  
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe008;</span>
+                        </span>
+                        <input id="nome" name="nome" type="text" value="{{ model['nome'] }}" placeholder="Informe o nome completo" class="form-control input-md" required="">
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="textiCPFMedico">CPF:</label>  
-                    <div class="col-md-2">
-                        <input id="textiCPFMedico" name="textiCPFMedico" type="text" placeholder="999.999.999-99" class="form-control input-md">
+                    <label class="col-md-4 control-label" for="cpf">CPF:</label>  
+                    <div class="col-md-2 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe055;</span>
+                        </span>
+                        <input id="cpf" name="cpf" type="text" value="{{ model['cpf'] }}" placeholder="999.999.999-99" class="form-control input-md" pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}">
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="numeroCRM">* CRM:</label>  
-                    <div class="col-md-6">
-                        <input id="numeroCRM" name="numeroCRM" type="text" placeholder="Informe o número do CRM" class="form-control input-md" required="">
+                    <label class="col-md-4 control-label" for="crm"><strong>* </strong> CRM:</label>  
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe055;</span>
+                        </span>
+                        <input id="crm" name="crm" type="text" value="{{ model['crm'] }}" placeholder="Informe o número do CRM" class="form-control input-md" required="">
                     </div>
                 </div>
 
                 <!-- Select Basic -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="selectbasicEspecialidade">* Especialidade:</label>
-                    <div class="col-md-2">
-                        <input type="text" id="selectbasicEspecialidade" name="selectbasicEspecialidade"   class="form-control" required="">
+                    <label class="col-md-4 control-label" for="id_especialidade">* Especialidade:</label>
+                    <div class="col-md-6">
+                        <input type="text" id="id_especialidade" name="id_especialidade" value="{{ model['id_especialidade'] }}" class="form-control" required="">
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="area">Área de atuação:</label>  
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe139;</span>
+                        </span>
+                        <select id="area" name="area" class="form-control">
+                            {% for item in tupla_area %}
+                                <option value="{{ item }}"
+                                {{ 'selected="selected"' if (item == model['area']) }}
+                                >
+                                  {{ item }}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="areaMedico">Área de atuação:</label>  
-                    <div class="col-md-6">
-                        <input id="areaMedico" name="areaMedico" type="text" placeholder="Informa a área de atuação" class="form-control input-md">
+                    <label class="col-md-4 control-label" for="rua">Endereço:</label>
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe021;</span>
+                        </span>
+                        <input id="rua" name="rua" type="text" value="{{ model['rua'] }}" placeholder="Informe o nome da rua" class="form-control input-md">
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="txtEndMedico">Endereço:</label>  
-                    <div class="col-md-6">
-                        <input id="txtEndMedico" name="txtEndMedico" type="text" placeholder="Informe o nome e número da residência" class="form-control input-md">
+                    <label class="col-md-4 control-label" for="numero">N°:</label>
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe021;</span>
+                        </span>
+                        <input id="numero" name="numero" type="text" value="{{ model['numero'] }}" placeholder="Informe o número da casa" class="form-control input-md">
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="bairro">Bairro:</label>
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe021;</span>
+                        </span>
+                        <input id="bairro" name="bairro" type="text" value="{{ model['bairro'] }}" placeholder="Informe o bairro  " class="form-control input-md">
                     </div>
                 </div>
 
                 <!-- Select Basic -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="selectbasicEstadoMedico">Estado: </label>
-                    <div class="col-md-2">
-                        <select id="selectbasicEstadoMedico" name="selectbasicEstadoMedico" class="form-control">
-                            <option value="1">Selecione</option>
-                            <option value="2">AC</option>
-                            <option value="3">AL</option>
-                            <option value="4">AP</option>
-                            <option value="5">AM</option>
-                            <option value="6">BA</option>
-                            <option value="7">CE</option>
-                            <option value="8">DF</option>
-                            <option value="9">ES</option>
-                            <option value="10">GO</option>
-                            <option value="11">MA</option>
-                            <option value="12">MT</option>
-                            <option value="13">MS</option>
-                            <option value="14">MG</option>
-                            <option value="15">PA</option>
-                            <option value="16">PB</option>
-                            <option value="17">PR</option>
-                            <option value="18">PE</option>
-                            <option value="19">PI</option>
-                            <option value="20">RJ</option>
-                            <option value="21">RN</option>
-                            <option value="22">RS</option>
-                            <option value="23">RO</option>
-                            <option value="24">RR</option>
-                            <option value="25">SC</option>
-                            <option value="26">SP</option>
-                            <option value="27">SE</option>
-                            <option value="28">TO</option>
+                    <label class="col-md-4 control-label" for="estado">Estado: </label>
+                    <div class="col-md-2 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe021;</span>
+                        </span>
+                        <select id="estado" name="estado" class="form-control">
+                            {% for item in tupla_estado %}
+                                <option value="{{ item[0] }}"
+                                {{ 'selected="selected"' if (item[0] == model['estado']) }}
+                                >
+                                  {{ item[1] }}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="textCidMedico">Cidade:</label>  
-                    <div class="col-md-6">
-                        <input id="textCidMedico" name="textCidMedico" type="text" placeholder="Informe o nome da cidade" class="form-control input-md">
+                    <label class="col-md-4 control-label" for="cidade">Cidade:</label>  
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe021;</span>
+                        </span>
+                        <input id="cidade" name="cidade" type="text" value="{{ model['cidade'] }}" placeholder="Informe o nome da cidade" class="form-control input-md">
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="textTelMedico">* Telefone:</label>  
-                    <div class="col-md-4">
-                        <input id="textTelMedico" name="textTelMedico" type="text" placeholder="(99)99999-9999" class="form-control input-md" required="">
+                    <label class="col-md-4 control-label" for="telefone"><strong>* </strong> Telefone:</label>  
+                    <div class="col-md-4 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe145;</span>
+                        </span>
+                        <input id="telefone" name="telefone" type="text" value="{{ model['telefone'] }}" placeholder="(99)99999-9999" class="form-control input-md" required="" pattern="([1-9]{2})[1-9]{5}-[1-9]{4}">
                     </div>
                 </div>
 
                 <!-- Select Basic -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="selectbasicSituacao">Situação</label>
-                    <div class="col-md-4">
-                        <select id="selectbasicSituacao" name="selectbasicSituacao" class="form-control">
-                            <option value="1">Selecione</option>
-                            <option value="2">Ativo</option>
-                            <option value="3">Inativo</option>
+                    <label class="col-md-4 control-label" for="status">Situação</label>
+                    <div class="col-md-4 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe055;</span>
+                        </span>
+                        <select id="situacao" name="status" class="form-control">
+                            {% for item in tupla_status %}
+                            <option value="{{ item[0] }}"
+                            {{ 'selected="selected"' if (item[0] == model['status']) }}
+                            >
+                              {{ item[1] }}
+                            </option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
-
                 <!-- Button (Double) -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="btnSalvar"></label>
-                    <div class="col-md-2">
-                        <button id="btnSalvar" name="btnSalvar" class="btn btn-success">Salvar</button>
-                        <button id="btnCancelar" name="btnCancelar" class="btn btn-danger">Cancelar</button>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="btnSalvar"></label>
+                        <div class="col-md-8">
+                            <button id="btnSalvar" type="submit" class="btn btn-success">
+                            <span class="glyphicon glyphicon-ok"></span>&nbsp;
+                            Salvar
+                            </button>
+                            <a id="btnCancelar" type="button" class="btn btn-danger" href="{{ url_for('especialidade.index') }}">
+                            <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                            Cancelar
+                            </a>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
             </fieldset>
         </form>
         <script type="text/javascript">
-      $("#selectbasicEspecialidade").selectSearch({
-        findSearch:function(search, limit, offset){
-            var d1 = $.Deferred();
-            if(offset == 0){
-                d1.resolve(
-                    [
-                        {'valor':'1','descricao':'Item 1'},
-                        {'valor':'2','descricao':'Item 2'},
-                        {'valor':'3','descricao':'Item 3'},
-                        {'valor':'4','descricao':'Item 4'},
-                        {'valor':'5','descricao':'Item 5'},
-                        {'valor':'6','descricao':'Item 6'},
-                        {'valor':'6','descricao':'Item 7'},
-                        {'valor':'6','descricao':'Item 8'},
-                        {'valor':'6','descricao':'Item 9'},
-                    ]
-                    );
-            }
-            if(offset == 1){
-                d1.resolve(
-                    [
-                        {'valor':'7','descricao':'Item 7'},
-                        {'valor':'8','descricao':'Item 8'},
-                        {'valor':'9','descricao':'Item 9'},
-                        {'valor':'10','descricao':'Item 10'}
-                    ]
-                    );
-            }
-            if(offset == 2){
-                d1.resolve(
-                    [
-                        {'valor':'11','descricao':'Item 11'},
-                        {'valor':'12','descricao':'Item 12'},
-                        {'valor':'13','descricao':'Item 13'},
-                        {'valor':'14','descricao':'Item 14'}
-                    ]
-                    );
-            }
-            return d1;
-        },
-        findById:function(id){
-            var d1 = $.Deferred();
-            d1.resolve({'valor':id,'descricao':'Item '+id});
-            return d1;
-        },
-          getDescription: function(data){
-              return data.descricao;
-          },
-          getValue: function(data){
-              return data.valor;
-          },
-          hideField:true
-      });
+        $("#id_especialidade").selectSearch({
+            findSearch:function(search, limit, offset){
+                return $.ajax({
+                    url : "{{ url_for('especialidade.ajax') }}",
+                    dataType : "json",
+                    data:'descricao='+search+'&limit='+limit+'&offset='+(limit * offset)
+                });
+            },
+            findById:function(id){
+                return $.ajax({
+                    url : "{{ url_for('especialidade.ajax_by_id',pk='') }}"+id,
+                    dataType : "json"
+                });
+            },
+            getDescription: function(data){
+                return data.id+'-'+data.descricao;
+            },
+            getValue: function(data){
+                return data.id;
+            },
+            hideField:true
+        });
       </script>    
 {% endblock %}

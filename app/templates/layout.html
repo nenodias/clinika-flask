@@ -17,7 +17,7 @@
             <li class="dropdown">
               <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">Médicos <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Cadastro</a></li>
+                <li><a href="{{ url_for('medico.form',pk=None) }}">Cadastro</a></li>
                 <li><a href="{{ url_for('medico.index') }}">Consulta</a></li>
             </ul>
             <li class="dropdown">

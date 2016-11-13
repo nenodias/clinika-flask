@@ -106,6 +106,16 @@
         <script type="text/javascript">
             var limit = 10;
             var offset = 0;
+
+            var getPlano = function(codigo){
+                var planos = {  
+                    {% for item in tupla_plano %}
+                    '{{ item[0] }}':'{{ item[1] }}',
+                    {% endfor %}
+                };
+                return planos[codigo];
+            }
+
             var carregarDados = function(){
                 var dados = $('form').serialize();
                 
@@ -145,6 +155,8 @@
                     $('.dados-tabela').html('');
                     var template = _.template( $("#linha-template").html() );
                     _.each(dados, function(linha){
+                        var plano = linha['plano'];
+                        linha['plano'] = getPlano(plano);
                         var html = template(linha);
                         $('.dados-tabela').append(html);
                     });

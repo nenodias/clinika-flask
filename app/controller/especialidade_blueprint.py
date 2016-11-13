@@ -4,7 +4,7 @@ from pdb import set_trace
 from flask import (Blueprint, render_template, request, redirect, url_for, flash, 
     jsonify, render_template, Response)
 from app import auth_require
-from app.db import db, especialidades as _table
+from app.db import db, especialidades as _table, tupla_status
 
 especialidade_blueprint = Blueprint('especialidade', __name__)
 
@@ -14,7 +14,7 @@ def index():
     contexto = {}
     _descricao = request.args.get('descricao', '')
     _status = request.args.get('status', '')
-    contexto['tupla_status'] = ( ('', 'Selecionar'),(True, 'Ativo'),(False, 'Desativado') )
+    contexto['tupla_status'] = tupla_status
     contexto['model'] = {
         'descricao':_descricao,
         'status':_status
@@ -28,7 +28,7 @@ def form(pk):
     #Pega os dados dos campos na tela
     contexto = {}
     contexto['model'] = {}
-    contexto['tupla_status'] = ( ('', 'Selecionar'),(True, 'Ativo'),(False, 'Desativado') )
+    contexto['tupla_status'] = tupla_status
     if request.method == 'POST':
         descricao = request.form.get("descricao")
         status = request.form.get("status")

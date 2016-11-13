@@ -4,7 +4,7 @@ from pdb import set_trace
 from flask import (Blueprint, render_template, request, redirect, url_for, flash, 
     jsonify, render_template, Response)
 from app import auth_require
-from app.db import db, pacientes as _table
+from app.db import db, pacientes as _table, tupla_estado, tupla_plano
 
 paciente_blueprint = Blueprint('paciente', __name__)
 
@@ -14,6 +14,7 @@ def index():
     contexto = {}
     _nome = request.args.get('nome', '')
     _cpf = request.args.get('cpf', '')
+    contexto['tupla_plano'] = tupla_plano
     contexto['model'] = {
         'nome':_nome,
         'cpf':_cpf
@@ -27,42 +28,8 @@ def form(pk):
     #Pega os dados dos campos na tela
     contexto = {}
     contexto['model'] = {}
-    contexto['tupla_plano'] = ( 
-        ('', 'Selecionar'),
-        ('SEM_COBERTURA', 'Sem Cobertura'),
-        ('COBERTURA_PARCIAL', 'Cobertura parcial'),
-        ('COBERTURA_TOTAL', 'Cobertura total'),
-    )
-    contexto['tupla_estado'] = (
-        ('', 'Selecionar'),
-        (u'AC',u'Acre'),
-        (u'AL',u'Alagoas'),
-        (u'AP',u'Amapá'),
-        (u'AM',u'Amazonas'),
-        (u'BA',u'Bahia'),
-        (u'CE',u'Ceará'),
-        (u'DF',u'Distrito Federal'),
-        (u'ES',u'Espírito Santo'),
-        (u'GO',u'Goiás'),
-        (u'MA',u'Maranhão'),
-        (u'MT',u'Mato Grosso'),
-        (u'MS',u'Mato Grosso do Sul'),
-        (u'MG',u'Minas Gerais'),
-        (u'PA',u'Pará'),
-        (u'PB',u'Paraíba'),
-        (u'PR',u'Paraná'),
-        (u'PE',u'Pernambuco'),
-        (u'PI',u'Piauí'),
-        (u'RJ',u'Rio de Janeiro'),
-        (u'RN',u'Rio Grande do Norte'),
-        (u'RS',u'Rio Grande do Sul'),
-        (u'RO',u'Rondônia'),
-        (u'RR',u'Roraima'),
-        (u'SC',u'Santa Catarina'),
-        (u'SP',u'São Paulo'),
-        (u'SE',u'Sergipe'),
-        (u'TO',u'Tocantins'),
-    )
+    contexto['tupla_plano'] = tupla_plano
+    contexto['tupla_estado'] = tupla_estado
     if request.method == 'POST':
         #Pega os dados dos campos na tela
         nome = request.form.get("nome")

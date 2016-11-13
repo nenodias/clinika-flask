@@ -36,7 +36,7 @@ if __name__ == '__main__':
         'nome':u'Paciente de Teste',
         'cpf':u'111.222.444.777-35',
         'telefone':u'+55 14 9 1234-5678',
-        'plano':u'SEM PLANO',
+        'plano':u'SEM_COBERTURA',
         'rua':u'Rua de Teste',
         'numero':u'10-5',
         'bairro':u'Centro',

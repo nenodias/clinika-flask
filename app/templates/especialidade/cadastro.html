@@ -33,7 +33,7 @@
                     <span class="input-group-addon">
                       <span class="glyphicon">&#xe055;</span>
                     </span>
-                    <select id="status" name="status" class="form-control input-md">
+                    <select id="status" name="status" class="form-control input-md" required="">
                       {% for item in tupla_status %}
                         <option value="{{ item[0] }}"
                         {{ 'selected="selected"' if (item[0] == model['status']) }}

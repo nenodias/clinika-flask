@@ -30,6 +30,36 @@ def form(pk):
         ('COBERTURA_PARCIAL', 'Cobertura parcial'),
         ('COBERTURA_TOTAL', 'Cobertura total'),
     )
+    contexto['tupla_estado'] = (
+        ('', 'Selecionar'),
+        (u'AC',u'Acre'),
+        (u'AL',u'Alagoas'),
+        (u'AP',u'Amapá'),
+        (u'AM',u'Amazonas'),
+        (u'BA',u'Bahia'),
+        (u'CE',u'Ceará'),
+        (u'DF',u'Distrito Federal'),
+        (u'ES',u'Espírito Santo'),
+        (u'GO',u'Goiás'),
+        (u'MA',u'Maranhão'),
+        (u'MT',u'Mato Grosso'),
+        (u'MS',u'Mato Grosso do Sul'),
+        (u'MG',u'Minas Gerais'),
+        (u'PA',u'Pará'),
+        (u'PB',u'Paraíba'),
+        (u'PR',u'Paraná'),
+        (u'PE',u'Pernambuco'),
+        (u'PI',u'Piauí'),
+        (u'RJ',u'Rio de Janeiro'),
+        (u'RN',u'Rio Grande do Norte'),
+        (u'RS',u'Rio Grande do Sul'),
+        (u'RO',u'Rondônia'),
+        (u'RR',u'Roraima'),
+        (u'SC',u'Santa Catarina'),
+        (u'SP',u'São Paulo'),
+        (u'SE',u'Sergipe'),
+        (u'TO',u'Tocantins'),
+    )
     if request.method == 'POST':
         #Pega os dados dos campos na tela
         nome = request.form.get("nome")
@@ -60,10 +90,10 @@ def form(pk):
             if pk:
                 dicionario['id'] = pk
                 id_cadastro = _table.update(dicionario,['id'])
-                contexto['mensagem'] = u'Paciente {0} atualizado com sucesso'
+                contexto['mensagem'] = u'Paciente {0} atualizado com sucesso'.format(id_cadastro)
             else:
                 id_cadastro = _table.insert(dicionario,['id'])
-                contexto['mensagem'] = u'Paciente {0} cadastrado com sucesso'
+                contexto['mensagem'] = u'Paciente {0} cadastrado com sucesso'.format(id_cadastro)
         except:
             contexto['mensagem'] = u'Erro ao cadastrar paciente'
             contexto['tipo_mensagem'] = 'danger'
@@ -94,8 +124,8 @@ def ajax():
         params['nome'] = '%'+_nome+'%'
         sql += ' AND nome like :nome '
     if _cpf:
-        params['cpf'] = _cpf
-        sql += ' AND cpf = :cpf '
+        params['cpf'] = '%'+_cpf+'%'
+        sql += ' AND cpf like :cpf '
     
     sql += ' LIMIT :offset,:limit'
     params['offset'] = _offset

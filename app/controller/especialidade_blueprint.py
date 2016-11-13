@@ -37,15 +37,17 @@ def form(pk):
         }
         mensagem = None
         try:
+            contexto['tipo_mensagem'] = 'success'
             if pk:
                 dicionario['id'] = pk
                 id_cadastro = _table.update(dicionario,['id'])
-                contexto['mensagem'] = u'Especialidade {0} atualizada com sucesso'
+                contexto['mensagem'] = u'Especialidade {0} atualizada com sucesso'.format(id_cadastro)
             else:
                 id_cadastro = _table.insert(dicionario,['id'])
-                contexto['mensagem'] = u'Especialidade {0} cadastrada com sucesso'
+                contexto['mensagem'] = u'Especialidade {0} cadastrada com sucesso'.format(id_cadastro)
         except:
             contexto['mensagem'] = u'Erro ao cadastrar especialidade'
+            contexto['tipo_mensagem'] = 'danger'
     elif pk:
         data = _table.find_one(id=pk)
         contexto['model'] = dict(data)

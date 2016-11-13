@@ -6,55 +6,60 @@
 
             <!-- Form Name -->
             <legend>Cadastro de especialidade</legend>
-            <!-- Alerta obrigatoriedade -->
-            <div class ="alert-info"></alert>Os campos sinalizados com asterisco (*) são obrigatórios.
-            </div><br><br>
 
-            <!-- Text input-->
-            <div class="form-group">
-              <label class="col-md-4 control-label" for="descricao">* Nome da especialidade:</label>  
-              <div class="col-md-5 input-group">
-                  <span class="input-group-addon">
-                    <span class="glyphicon">&#xe139;</span>
-                  </span>
-                  <input id="descricao" name="descricao" type="text" value="{{ model['descricao'] }}" placeholder="Informe a especialidade" class="form-control input-md" required="" />
+            {% if mensagem %}
+            <div class="alert alert-{{tipo_mensagem}}" role="alert">{{mensagem}}</div>
+            {% else %}
+
+              <!-- Alerta obrigatoriedade -->
+              <div class ="alert-info">Os campos sinalizados com asterisco (*) são obrigatórios.
+              </div><br><br>
+
+              <!-- Text input-->
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="descricao">* Nome da especialidade:</label>  
+                <div class="col-md-5 input-group">
+                    <span class="input-group-addon">
+                      <span class="glyphicon">&#xe139;</span>
+                    </span>
+                    <input id="descricao" name="descricao" type="text" value="{{ model['descricao'] }}" placeholder="Informe a especialidade" class="form-control input-md" required="" />
+                </div>
               </div>
-            </div>
 
-            <!-- Select Basic -->
-            <div class="form-group">
-              <label class="col-md-4 control-label" for="selectbasicSituacao">Situação</label>
-              <div class="col-md-4 input-group">
-                  <span class="input-group-addon">
-                    <span class="glyphicon">&#xe055;</span>
-                  </span>
-                  <select id="status" name="status" class="form-control input-md">
-                    {% for item in tupla_status %}
-                      <option value="{{ item[0] }}"
-                      {{ 'selected="selected"' if (item[0] == model['status']) }}
-                      >
-                        {{ item[1] }}
-                      </option>
-                    {% endfor %}
-                  </select>
+              <!-- Select Basic -->
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="selectbasicSituacao">Situação</label>
+                <div class="col-md-4 input-group">
+                    <span class="input-group-addon">
+                      <span class="glyphicon">&#xe055;</span>
+                    </span>
+                    <select id="status" name="status" class="form-control input-md">
+                      {% for item in tupla_status %}
+                        <option value="{{ item[0] }}"
+                        {{ 'selected="selected"' if (item[0] == model['status']) }}
+                        >
+                          {{ item[1] }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                </div>
               </div>
-            </div>
 
-            <!-- Button (Double) -->
-            <div class="form-group">
-              <label class="col-md-4 control-label" for="btnSalvar"></label>
-              <div class="col-md-8">
-                <button id="btnSalvar" type="submit" class="btn btn-success">
-                <span class="glyphicon glyphicon-ok"></span>&nbsp;
-                Salvar
-                </button>
-                <a id="btnCancelar" type="button" class="btn btn-danger" href="{{ url_for('especialidade.index') }}">
-                <span class="glyphicon glyphicon-remove"></span>&nbsp;
-                Cancelar
-                </a>
+              <!-- Button (Double) -->
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="btnSalvar"></label>
+                <div class="col-md-8">
+                  <button id="btnSalvar" type="submit" class="btn btn-success">
+                  <span class="glyphicon glyphicon-ok"></span>&nbsp;
+                  Salvar
+                  </button>
+                  <a id="btnCancelar" type="button" class="btn btn-danger" href="{{ url_for('especialidade.index') }}">
+                  <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                  Cancelar
+                  </a>
+                </div>
               </div>
-            </div>
-
+            {% endif %}
             </fieldset>
         </form>
 {% endblock %}

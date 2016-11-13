@@ -56,6 +56,7 @@ def form(pk):
         }
         mensagem = None
         try:
+            contexto['tipo_mensagem'] = 'success'
             if pk:
                 dicionario['id'] = pk
                 id_cadastro = _table.update(dicionario,['id'])
@@ -65,6 +66,7 @@ def form(pk):
                 contexto['mensagem'] = u'Paciente {0} cadastrado com sucesso'
         except:
             contexto['mensagem'] = u'Erro ao cadastrar paciente'
+            contexto['tipo_mensagem'] = 'danger'
     elif pk:
         data = _table.find_one(id=pk)
         contexto['model'] = dict(data)

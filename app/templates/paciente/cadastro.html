@@ -7,71 +7,156 @@
                 <!-- Form Name -->
                 <legend>Cadastro de paciente</legend>
 
-                <!-- Alerta obrigatoriedade -->
-                <div class ="alert-info"></alert>Os campos sinalizados com asterisco (*) são obrigatórios.
-                </div><br><br>
+                {% if mensagem %}
+                <div class="alert alert-{{tipo_mensagem}}" role="alert">{{mensagem}}</div>
+                {% else %}
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="txtNomePaciente">* Nome: </label>  
-                    <div class="col-md-6">
-                        <input id="txtNomePaciente" name="txtNomePaciente" type="text" placeholder="Informe o nome completo" class="form-control input-md" required="">
-                    </div>
-                </div>
+                  <!-- Alerta obrigatoriedade -->
+                  <div class ="alert-info">Os campos sinalizados com asterisco (*) são obrigatórios.
+                  </div><br><br>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textiCPFPaciente">CPF:</label>
-                    <div class="col-md-2">
-                        <input id="textiCPFPaciente" name="textiCPFPaciente" type="text" placeholder="999.999.999-99" class="form-control input-md">
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="txtNome"><strong>* </strong> Nome: </label>  
+                        <div class="col-md-6 input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon">&#xe008;</span>
+                            </span>
+                            <input id="txtNome" name="txtNome" type="text" placeholder="Informe o nome completo" class="form-control input-md" required="">
+                        </div>
                     </div>
-                </div>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textTelPaciente">* Telefone:</label>  
-                    <div class="col-md-2">
-                        <input id="textTelPaciente" name="textTelPaciente" type="text" placeholder="(99)99999-9999" class="form-control input-md" required="">
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="txtCpf">CPF:</label>
+                        <div class="col-md-2 input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon">&#xe055;</span>
+                            </span>
+                            <input id="txtCpf" name="txtCpf" type="text" placeholder="999.999.999-99" class="form-control input-md">
+                        </div>
                     </div>
-                </div>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="txtEndPaciente">Endereço:</label>  
-                    <div class="col-md-6">
-                        <input id="txtEndPaciente" name="txtEndPaciente" type="text" placeholder="Informe o nome e número da residência" class="form-control input-md">
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="txtTel"><strong>* </strong> Telefone:</label>  
+                        <div class="col-md-4 input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon">&#xe145;</span>
+                            </span>
+                            <input id="txtTel" name="txtTel" type="text" placeholder="(99)99999-9999" class="form-control input-md" required="" pattern="([1-9]{2})[0-9]{5}-[0-9]{4}">
+                        </div>
                     </div>
-                </div>
 
-                <!-- Select Basic -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="selectbasicPlano">Plano:</label>
-                    <div class="col-md-2">
-                        <select id="selectbasicPlano" name="selectbasicPlano" class="form-control">
-                            <option value="1">Selecione</option>
-                            <option value="2">Sem cobertura</option>
-                            <option value="3">Cobertura parcial</option>
-                            <option value="4">Cobertura total</option>
-                        </select>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="txtRua">Endereço:</label>
+                        <div class="col-md-6 input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon">&#xe021;</span>
+                            </span>
+                            <input id="txtRua" name="txtRua" type="text" placeholder="Informe o nome da rua" class="form-control input-md">
+                        </div>
                     </div>
-                </div>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textPlanoPaciente">Nome do plano:</label>  
-                    <div class="col-md-6">
-                        <input id="textPlanoPaciente" name="textPlanoPaciente" type="text" placeholder="Informe o nome do plano" class="form-control input-md">
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="txtNum">Rua:</label>
+                        <div class="col-md-6 input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon">&#xe021;</span>
+                            </span>
+                            <input id="txtNum" name="txtNum" type="text" placeholder="Informe o número da casa" class="form-control input-md">
+                        </div>
                     </div>
-                </div>
 
-                <!-- Button (Double) -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="btnSalvar"></label>
-                    <div class="col-md-8">
-                        <button id="btnSalvar" name="btnSalvar" class="btn btn-success">Salvar</button>
-                        <button id="btnCancelar" name="btnCancelar" class="btn btn-danger">Cancelar</button>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="txtBairro">Bairro:</label>
+                        <div class="col-md-6 input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon">&#xe021;</span>
+                            </span>
+                            <input id="txtBairro" name="txtBairro" type="text" placeholder="Informe o bairro  " class="form-control input-md">
+                        </div>
                     </div>
-                </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="estado">Estado: </label>
+                        <div class="col-md-2 input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon">&#xe021;</span>
+                            </span>
+                            <select id="estado" name="estado" class="form-control">
+                                <option value="1">Selecione</option>
+                                <option value="AC">AC</option>
+                                <option value="AL">AL</option>
+                                <option value="AP">AP</option>
+                                <option value="AM">AM</option>
+                                <option value="BA">BA</option>
+                                <option value="CE">CE</option>
+                                <option value="DF">DF</option>
+                                <option value="ES">ES</option>
+                                <option value="GO">GO</option>
+                                <option value="MA">MA</option>
+                                <option value="MT">MT</option>
+                                <option value="MS">MS</option>
+                                <option value="MG">MG</option>
+                                <option value="PA">PA</option>
+                                <option value="PB">PB</option>
+                                <option value="PR">PR</option>
+                                <option value="PE">PE</option>
+                                <option value="PI">PI</option>
+                                <option value="RJ">RJ</option>
+                                <option value="RN">RN</option>
+                                <option value="RS">RS</option>
+                                <option value="RO">RO</option>
+                                <option value="RR">RR</option>
+                                <option value="SC">SC</option>
+                                <option value="SP">SP</option>
+                                <option value="SE">SE</option>
+                                <option value="TO">TO</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="txtCidade">Cidade:</label>  
+                        <div class="col-md-6 input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon">&#xe021;</span>
+                            </span>
+                            <input id="txtCidade" name="txtCidade" type="text" placeholder="Informe o nome da cidade" class="form-control input-md">
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="plano">Plano:</label>
+                        <div class="col-md-2 input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon">&#xe148;</span>
+                            </span>
+                            <select id="plano" name="plano" class="form-control">
+                                <option value="1">Selecione</option>
+                                <option value="2">Sem cobertura</option>
+                                <option value="3">Cobertura parcial</option>
+                                <option value="4">Cobertura total</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Button (Double) -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="btnSalvar"></label>
+                        <div class="col-md-8">
+                            <button id="btnSalvar" name="btnSalvar" class="btn btn-success" type="submit">Salvar</button>
+                            <button id="btnCancelar" name="btnCancelar" class="btn btn-danger" type="reset">Cancelar</button>
+                        </div>
+                    </div>
+                    {% endif %}
             </fieldset>
         </form>
 {% endblock %}

@@ -27,8 +27,8 @@ def form(pk):
     contexto['tupla_plano'] = ( 
         ('', 'Selecionar'),
         ('SEM_COBERTURA', 'Sem Cobertura'),
-        ('COBERTURA_PARCIAL', 'Cobertura parcial')
-        ('COBERTURA_TOTAL', 'Cobertura total')
+        ('COBERTURA_PARCIAL', 'Cobertura parcial'),
+        ('COBERTURA_TOTAL', 'Cobertura total'),
     )
     if request.method == 'POST':
         #Pega os dados dos campos na tela

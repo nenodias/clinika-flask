@@ -53,7 +53,7 @@
                         </button>
                     </div>
                     <div class="col-md-12">
-                        <a class="btn btn-info" role="button" href="{{ url_for('especialidade.form',pk=None)}}">
+                        <a class="btn btn-info" role="button" href="{{ url_for('agendamento.form',pk=None)}}">
                         <span class="glyphicon glyphicon-plus"></span>&nbsp;
                         Inserir
                         </a>
@@ -82,16 +82,16 @@
         <template id="linha-template">
             <tr>
                 <td>[{id}]</td>
-                <td>[{id_medico}]</td>
-                <td>[{id_paciente}]</td>
+                <td>[{medico}]</td>
+                <td>[{paciente}]</td>
                 <td>[{data}]</td>
                 <td>[{hora}]</td>
                 <td>
-                    <a class="btn btn-warning" href="{{url_for('especialidade.form')}}[{id}]">
+                    <a class="btn btn-warning" href="{{url_for('agendamento.form')}}[{id}]">
                     <span class="glyphicon glyphicon-pencil"></span>&nbsp;
                     Editar
                     </a>
-                    <a class="btn btn-danger" href="#" data-target="{{url_for('especialidade.delete',pk='')}}[{id}]">
+                    <a class="btn btn-danger" href="#" data-target="{{url_for('agendamento.delete',pk='')}}[{id}]">
                     <span class="glyphicon glyphicon-trash"></span>&nbsp;
                     Excluir
                     </a>
@@ -122,6 +122,34 @@
         <script type="text/javascript">
             var limit = 10;
             var offset = 0;
+
+            var getMedico = function(id){
+                var d1 = $.Deferred();
+                $.ajax({
+                    url:'{{ url_for("medico.ajax_by_id",pk='') }}'+id,
+                    method:'get',
+                    dataType: 'json'
+                }).done(function(data){
+                    d1.resolve(data.nome);
+                }).fail(function(){
+                    d1.resolve('');
+                });
+                return d1;
+            };
+
+            var getPaciente = function(id){
+                var d1 = $.Deferred();
+                $.ajax({
+                    url:'{{ url_for("paciente.ajax_by_id",pk='') }}'+id,
+                    method:'get',
+                    dataType: 'json'
+                }).done(function(data){
+                    d1.resolve(data.nome);
+                }).fail(function(){
+                    d1.resolve('');
+                });
+                return d1;
+            };
 
             var carregarDados = function(){
                 var dados = $('form').serialize();
@@ -159,11 +187,31 @@
 
                     //Atualizando Tabela
                     var dados = retorno[0];
-                    $('.dados-tabela').html('');
+                    //$('.dados-tabela').html('');
+                    var dados_tabela = document.createElement('tbody');
+                    var loaded = $.Deferred();
                     var template = _.template( $("#linha-template").html() );
+                    var max_count = dados.length;
+                    var count = 0;
                     _.each(dados, function(linha){
-                        var html = template(linha);
-                        $('.dados-tabela').append(html);
+                        var d_medico = getMedico(linha['id_medico']);
+                        var d_paciente = getPaciente(linha['id_medico']);
+                        $.when(d_medico,d_paciente).then(function(medico, paciente){
+                            linha['medico'] = medico;
+                            linha['paciente'] = paciente;
+                            var html = template(linha);
+                            $(dados_tabela).append(html);
+                            count++;
+                            if(max_count == count){
+                                loaded.resolve('');
+                            }
+                        });
+                    });
+                    if(max_count == count){
+                        loaded.resolve('');
+                    }
+                    loaded.done(function(){
+                        $('.dados-tabela').html( $(dados_tabela).html() );
                     });
                     //Fim da Atualizacao da Tabela
 
@@ -199,6 +247,50 @@
                 $("#btnPesquisar").click(carregarDados);
                 $('table').on('click','.btn-danger', eventoExcluir);
                 $('.div-paginacao').on('click','.pager a', eventoPage);
+            });
+            $("#id_medico").selectSearch({
+                findSearch:function(search, limit, offset){
+                    return $.ajax({
+                        url : "{{ url_for('medico.ajax') }}",
+                        dataType : "json",
+                        data:'nome='+search+'&limit='+limit+'&offset='+(limit * offset)
+                    });
+                },
+                findById:function(id){
+                    return $.ajax({
+                        url : "{{ url_for('medico.ajax_by_id',pk='') }}"+id,
+                        dataType : "json"
+                    });
+                },
+                getDescription: function(data){
+                    return data.id+'-'+data.nome;
+                },
+                getValue: function(data){
+                    return data.id;
+                },
+                hideField:true
+            });
+            $("#id_paciente").selectSearch({
+                findSearch:function(search, limit, offset){
+                    return $.ajax({
+                        url : "{{ url_for('paciente.ajax') }}",
+                        dataType : "json",
+                        data:'nome='+search+'&limit='+limit+'&offset='+(limit * offset)
+                    });
+                },
+                findById:function(id){
+                    return $.ajax({
+                        url : "{{ url_for('paciente.ajax_by_id',pk='') }}"+id,
+                        dataType : "json"
+                    });
+                },
+                getDescription: function(data){
+                    return data.id+'-'+data.nome;
+                },
+                getValue: function(data){
+                    return data.id;
+                },
+                hideField:true
             });
         </script>
 {% endblock %}

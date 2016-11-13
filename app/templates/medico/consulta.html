@@ -178,15 +178,30 @@
 
                     //Atualizando Tabela
                     var dados = retorno[0];
-                    $('.dados-tabela').html('');
+                    //$('.dados-tabela').html('');
+                    var dados_tabela = document.createElement('tbody');
+                    var loaded = $.Deferred();
+                    var template = _.template( $("#linha-template").html() );
+                    var max_count = dados.length;
+                    var count = 0;
                     var template = _.template( $("#linha-template").html() );
                     _.each(dados, function(linha){
                         getEspecialidade(linha['id_especialidade']).done(function(especialidade){
                             linha['especialidade'] = especialidade;
                             linha['status'] = getStatus( linha['status'] );
                             var html = template(linha);
-                            $('.dados-tabela').append(html);
+                            $(dados_tabela).append(html);
+                            count++;
+                            if(max_count == count){
+                                loaded.resolve('');
+                            }
                         });
+                    });
+                    if(max_count == count){
+                        loaded.resolve('');
+                    }
+                    loaded.done(function(){
+                        $('.dados-tabela').html( $(dados_tabela).html() );
                     });
                     //Fim da Atualizacao da Tabela
 

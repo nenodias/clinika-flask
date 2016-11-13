@@ -90,7 +90,7 @@ def ajax():
         sql += ' AND id_paciente = :id_paciente '
 
     if _data:
-        params['data'] = datetime.strftime(_data, '%Y-%m-%d')
+        params['data'] = datetime.strptime(_data, '%Y-%m-%d').date()
         sql += ' AND data = :data '
     
     sql += ' LIMIT :offset,:limit'

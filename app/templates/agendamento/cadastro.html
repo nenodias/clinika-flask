@@ -6,47 +6,56 @@
 
                 <!-- Form Name -->
                 <legend>Cadastro de agendamento</legend>
+                
+                {% if mensagem %}
+                <div class="alert alert-{{tipo_mensagem}}" role="alert">{{mensagem}}</div>
+                {% else %}
 
-                <!-- Alerta obrigatoriedade -->
-                <div class ="alert-info"></alert>Os campos sinalizados com asterisco (*) são obrigatórios.
-                </div><br><br>
+                  <!-- Alerta obrigatoriedade -->
+                  <div class ="alert-info">Os campos sinalizados com asterisco (*) são obrigatórios.
+                  </div><br><br>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="txtNomeMedico">* Nome do médico: </label>  
-                    <div class="col-md-6">
-                        <input id="txtNomeMedico" name="txtNomeMedico" type="text" placeholder="Informe o nome completo" class="form-control input-md" required="">
+                    <label class="col-md-4 control-label" for="id_medico">* Nome do médico: </label>  
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe008;</span>
+                        </span>
+                        <input id="id_medico" name="id_medico" type="text" value="{{ model['id_medico'] }}" placeholder="Informe o nome completo" class="form-control input-md" required="">
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="textNomePaciente">* Nome do paciente:</label>  
-                    <div class="col-md-6">
-                        <input id="textNomePaciente" name="textNomePaciente" type="text" placeholder="999.999.999-99" class="form-control input-md" required="">
+                    <label class="col-md-4 control-label" for="id_paciente">* Nome do paciente:</label>  
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe008;</span>
+                        </span>
+                        <input id="id_paciente" name="id_paciente" type="text" value="{{ model['id_paciente'] }}" placeholder="999.999.999-99" class="form-control input-md" required="">
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="textTelContato">Telefone:</label><div class="col-md-4">
-                        <input id="textTelContato" name="textTelContato" type="text" placeholder="(99)99999-9999" class="form-control input-md">
+                    <label class="col-md-4 control-label" for="data">* Data:</label>  
+                    <div class="col-md-2 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe109;</span>
+                        </span>
+                        <input id="data" name="data" type="date" value="{{ model['data'] }}" placeholder="" class="form-control input-md" required="">
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="dateDataAgendamento">* Data:</label>  
-                    <div class="col-md-2">
-                        <input id="dateDataAgendamento" name="dateDataAgendamento" type="date" placeholder="" class="form-control input-md" required="">
-                    </div>
-                </div>
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="timeHoraAgendamento">* Hora:</label>  
-                    <div class="col-md-2">
-                        <input id="timeHoraAgendamento" name="timeHoraAgendamento" type="time" placeholder="" class="form-control input-md" required="">
+                    <label class="col-md-4 control-label" for="hora">* Hora:</label>  
+                    <div class="col-md-2 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe023;</span>
+                        </span>
+                        <input id="hora" name="hora" value="{{ model['hora'] }}" type="time" placeholder="" class="form-control input-md" required="">
                     </div>
                 </div>
 
@@ -54,10 +63,63 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="btnSalvar"></label>
                     <div class="col-md-8">
-                        <button id="btnSalvar" name="btnSalvar" class="btn btn-success">Salvar</button>
-                        <button id="btnCancelar" name="btnCancelar" class="btn btn-danger">Cancelar</button>
+                        <button id="btnSalvar" type="submit" class="btn btn-success">
+                        <span class="glyphicon glyphicon-ok"></span>&nbsp;
+                        Salvar
+                        </button>
+                        <a id="btnCancelar" type="button" class="btn btn-danger" href="{{ url_for('agendamento.index') }}">
+                        <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                        Cancelar
+                        </a>
                     </div>
                 </div>
+                {% endif %}
             </fieldset>
         </form>
+        <script type="text/javascript">
+        $("#id_medico").selectSearch({
+            findSearch:function(search, limit, offset){
+                return $.ajax({
+                    url : "{{ url_for('medico.ajax') }}",
+                    dataType : "json",
+                    data:'nome='+search+'&limit='+limit+'&offset='+(limit * offset)
+                });
+            },
+            findById:function(id){
+                return $.ajax({
+                    url : "{{ url_for('medico.ajax_by_id',pk='') }}"+id,
+                    dataType : "json"
+                });
+            },
+            getDescription: function(data){
+                return data.id+'-'+data.nome;
+            },
+            getValue: function(data){
+                return data.id;
+            },
+            hideField:true
+        });
+        $("#id_paciente").selectSearch({
+            findSearch:function(search, limit, offset){
+                return $.ajax({
+                    url : "{{ url_for('paciente.ajax') }}",
+                    dataType : "json",
+                    data:'nome='+search+'&limit='+limit+'&offset='+(limit * offset)
+                });
+            },
+            findById:function(id){
+                return $.ajax({
+                    url : "{{ url_for('paciente.ajax_by_id',pk='') }}"+id,
+                    dataType : "json"
+                });
+            },
+            getDescription: function(data){
+                return data.id+'-'+data.nome;
+            },
+            getValue: function(data){
+                return data.id;
+            },
+            hideField:true
+        });
+      </script>    
 {% endblock %}

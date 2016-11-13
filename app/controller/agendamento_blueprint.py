@@ -1,86 +1,139 @@
 # -*- coding: utf-8 -*-
 import json
+from datetime import datetime
 from pdb import set_trace
 from flask import (Blueprint, render_template, request, redirect, url_for, flash, 
     jsonify, render_template, Response)
 from app import auth_require
-from app.db import db, agendamentos as _table, tupla_status
+from app.db import db, agendamentos as _table
 
 agendamento_blueprint = Blueprint('agendamento', __name__)
 
 @agendamento_blueprint.route('/')
-def ajax_list():
+@auth_require()
+def index():
+    contexto = {}
+    _id_medico = request.args.get('id_medico', '')
+    _id_paciente = request.args.get('id_paciente', '')
+    _data = request.args.get('data', '')
+    contexto['model'] = {
+        'id_medico':_id_medico,
+        'id_paciente':_id_paciente,
+        'data':_data
+    }
+    return render_template('agendamento/consulta.html', **contexto)
+
+@agendamento_blueprint.route('/form/', defaults={'pk':None}, methods = ['post', 'get'])
+@agendamento_blueprint.route('/form/<pk>', methods = ['post', 'get'])
+@auth_require()
+def form(pk):
+    #Pega os dados dos campos na tela
+    contexto = {}
+    contexto['model'] = {}
+    if request.method == 'POST':
+        id_medico = request.form.get("id_medico")
+        id_paciente = request.form.get("id_paciente")
+        data = request.form.get("data")
+        hora = request.form.get("hora")
+      
+        #Criar dicionário com os dados
+        dicionario = {
+            "id_medico": int(id_medico),
+            "id_paciente": int(id_paciente),
+            "data":datetime.strptime(data, '%Y-%m-%d'),
+            "hora":hora
+        }
+        mensagem = None
+        try:
+            contexto['tipo_mensagem'] = 'success'
+            if pk:
+                dicionario['id'] = pk
+                id_cadastro = _table.update(dicionario,['id'])
+                contexto['mensagem'] = u'Agendamento {0} atualizada com sucesso'.format(id_cadastro)
+            else:
+                id_cadastro = _table.insert(dicionario,['id'])
+                contexto['mensagem'] = u'Agendamento {0} cadastrada com sucesso'.format(id_cadastro)
+        except:
+            contexto['mensagem'] = u'Erro ao cadastrar Agendamento'
+            contexto['tipo_mensagem'] = 'danger'
+    elif pk:
+        data = _table.find_one(id=pk)
+        contexto['model'] = dict(data)
+    return render_template('agendamento/cadastro.html', **contexto)
+
+
+@agendamento_blueprint.route('/delete/<pk>', methods = ['post'])
+@auth_require()
+def delete(pk):
+    data = _table.find_one(id=pk)
+    if data:
+        if _table.delete(id=pk):
+            return '', 200
+    return '',404
+
+@agendamento_blueprint.route('/ajax', methods = ['get'])
+@auth_require()
+def ajax():
     _limit = int(request.args.get('limit','10'))
     _offset = int(request.args.get('offset','0'))
-    _criteria = request.args.get('search', '')
-    _value = request.args.get('value', '')
-    _table = db.agendamentos
-    
-    count = _table.count()
-    total_pages = count // _limit;
-    page = _offset + 1;
+    _id_medico = request.args.get('id_medico', '')
+    _id_paciente = request.args.get('id_paciente', '')
+    _data = request.args.get('data', '')
     items = []
+    params = {}
+    sql = 'SELECT * FROM {0} WHERE 1 = 1 '.format(_table.table.name)
+    if _id_medico:
+        params['id_medico'] = int(_id_medico)
+        sql += ' AND id_medico = :id_medico '
+    if _id_paciente:
+        params['id_paciente'] = int(_id_paciente)
+        sql += ' AND id_paciente = :id_paciente '
 
-    search = {
-        '_limit':_limit,
-        '_offset':_offset,
-    }
-    number_results = 0
-    if _criteria and _value:
-        search[_criteria] = _value
+    if _data:
+        params['data'] = datetime.strftime(_data, '%Y-%m-%d')
+        sql += ' AND data = :data '
+    
+    sql += ' LIMIT :offset,:limit'
+    params['offset'] = _offset
+    params['limit'] = _limit
+
     try:
-        for item in _table.find(**search):
-            items.append( item )
-            number_results += 1
+        fetch = db.engine.execute(sql, params)
+        colunas = fetch.keys()
+        for dado in fetch:
+            items.append( dict(zip(colunas, dado)) )
     except Exception as ex:
         print(ex)
-    data = {
-        'page':page,
-        'total_pages':total_pages,
-        'results': number_results,
-        'total':count,
-        'data':items
-    }
-    return jsonify( data )
+    return Response(response=json.dumps( items ), status=200, mimetype="application/json")
 
-@agendamento_blueprint.route('/', methods=['POST'])
-def ajax_post():
-    _table = db.agendamentos
-    data = request.form.to_dict()
-    if 'id' in data:
-        operation = _table.update(data,['id'])
-    else:
-        operation = _table.insert(update,['id'])
-    if operation:
-        data = _table.find_one(id=id)
-        return jsonify(data), 200
-    return '',404
+@agendamento_blueprint.route('/count', methods = ['get'])
+@auth_require()
+def count():
+    _descricao = request.args.get('descricao', '')
+    _status = request.args.get('status', '')
+    items = []
+    params = {}
+    sql = 'SELECT COUNT(1) as count FROM {0} WHERE 1 = 1 '.format(_table.table.name)
+    if _descricao:
+        params['descricao'] = '%'+_descricao+'%'
+        sql += ' AND descricao like :descricao '
+    if _status:
+        params['status'] = _status
+        sql += ' AND status = :status '
+    try:
+        fetch = db.engine.execute(sql, params)
+        colunas = fetch.keys()
+        for dado in fetch:
+            item = dict(zip(colunas, dado))
+            items.append( item )
+    except Exception as ex:
+        print(ex)
+    return Response(response=json.dumps( items[0] ), status=200, mimetype="application/json")
 
-@agendamento_blueprint.route('/<id>', methods=['GET'])
-def ajax_get(id):
-    _table = db.agendamentos
-    data = _table.find_one(id=id)
+@agendamento_blueprint.route('/ajax/<pk>', methods = ['get'])
+@auth_require()
+def ajax_by_id(pk):
+    data = _table.find_one(id=pk)
     if data:
-        return jsonify(data), 200
-    return '',404
-
-@agendamento_blueprint.route('/<id>', methods=['PUT'])
-def ajax_put(id):
-    _table = db.agendamentos
-    data = _table.find_one(id=id)
-    update = request.form.to_dict()
-    update['id'] = id
-    if data:
-        _table.update(update,['id'])
-        data = _table.find_one(id=id)
-        return jsonify(data), 200
-    return '',404
-
-@agendamento_blueprint.route('/<id>', methods=['DELETE'])
-def ajax_delete(id):
-    _table = db.agendamentos
-    data = _table.find_one(id=id)
-    if data:
-        if _table.delete(id=id):
-            return '', 200
+        return Response(response=json.dumps( data ), status=200, mimetype="application/json")
     return '',404

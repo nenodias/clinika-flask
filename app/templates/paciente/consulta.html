@@ -7,19 +7,28 @@
                 <!-- Form Name -->
                 <legend>Consulta de paciente</legend>
 
+                <input type="hidden" id="limit" name="limit" value="10" />
+                <input type="hidden" id="offset" name="offset" value="0" />
+
                 <!-- Search input-->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="nome">Nome:</label>
-                    <div class="col-md-6">
-                        <input id="nome" name="nome" type="search" placeholder="Informe o nome do paciente" class="form-control input-md">
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe003;</span>
+                        </span>
+                        <input id="nome" name="nome" type="search" value="{{ model['nome'] }}" placeholder="Informe o nome do paciente" class="form-control input-md">
                     </div>
                 </div>
 
                 <!-- Search input-->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="cpf">CPF:</label>
-                    <div class="col-md-6">
-                        <input id="cpf" name="cpf" type="search" placeholder="Informe o número do CPF" class="form-control input-md">
+                    <div class="col-md-6 input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon">&#xe003;</span>
+                        </span>
+                        <input id="cpf" name="cpf" type="search" value="{{ model['cpf'] }}" placeholder="Informe o número do CPF" class="form-control input-md">
                     </div>
                 </div>
 

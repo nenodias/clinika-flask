@@ -7,6 +7,9 @@
             <!-- Form Name -->
                 <legend>Consulta de médico</legend>
 
+                <input type="hidden" id="limit" name="limit" value="10" />
+                <input type="hidden" id="offset" name="offset" value="0" />
+
                 <!-- Search input-->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="nome">Nome:</label>
@@ -14,7 +17,7 @@
                         <span class="input-group-addon">
                             <span class="glyphicon">&#xe003;</span>
                         </span>
-                        <input id="nome" name="nome" type="search" placeholder="Informe o nome" class="form-control input-md">
+                        <input id="nome" name="nome" type="search" value="{{ model['nome'] }}" placeholder="Informe o nome" class="form-control input-md">
                     </div>
                 </div>
 
@@ -25,7 +28,7 @@
                         <span class="input-group-addon">
                             <span class="glyphicon">&#xe003;</span>
                         </span>
-                        <input type="text" id="id_especialidade" name="id_especialidade"   class="form-control" >
+                        <input type="text" id="id_especialidade" name="id_especialidade" value="{{ model['id_especialidade'] }}"   class="form-control" >
                     </div>
                 </div>
 

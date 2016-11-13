@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+import json
+from pdb import set_trace
 from flask import (Blueprint, render_template, request, redirect, url_for, flash, 
-    jsonify, render_template)
+    jsonify, render_template, Response)
 from app import auth_require
-from app import db
+from app.db import db, agendamentos as _table, tupla_status
 
 agendamento_blueprint = Blueprint('agendamento', __name__)
 

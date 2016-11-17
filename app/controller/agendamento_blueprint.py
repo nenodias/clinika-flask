@@ -48,10 +48,11 @@ def form(pk):
             if pk:
                 dicionario['id'] = pk
                 id_cadastro = _table.update(dicionario,['id'])
-                contexto['mensagem'] = u'Agendamento {0} atualizada com sucesso'.format(id_cadastro)
+                flash( u'Agendamento {0} atualizado com sucesso'.format(id_cadastro), 'success')
             else:
                 id_cadastro = _table.insert(dicionario,['id'])
-                contexto['mensagem'] = u'Agendamento {0} cadastrada com sucesso'.format(id_cadastro)
+                flash( u'Agendamento {0} cadastrado com sucesso'.format(id_cadastro), 'success')
+            return redirect(url_for('agendamento.index'))
         except:
             contexto['mensagem'] = u'Erro ao cadastrar Agendamento'
             contexto['tipo_mensagem'] = 'danger'

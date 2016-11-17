@@ -50,7 +50,7 @@ def form(pk):
             "cpf": cpf,
             "crm": crm,
             "status": status,
-            "especialidade": especialidade,
+            "id_especialidade": especialidade,
             "area": area,
             "numero": numero,
             "rua": rua,
@@ -65,10 +65,11 @@ def form(pk):
             if pk:
                 dicionario['id'] = pk
                 id_cadastro = _table.update(dicionario,['id'])
-                contexto['mensagem'] = u'Médico {0} atualizada com sucesso'.format(id_cadastro)
+                flash( u'Médico {0} atualizado com sucesso'.format(id_cadastro), 'success')
             else:
                 id_cadastro = _table.insert(dicionario,['id'])
-                contexto['mensagem'] = u'Médico {0} cadastrada com sucesso'.format(id_cadastro)
+                flash( u'Médico {0} cadastrado com sucesso'.format(id_cadastro), 'success')
+            return redirect(url_for('medico.index'))
         except:
             contexto['mensagem'] = u'Erro ao cadastrar médico'
             contexto['tipo_mensagem'] = 'danger'

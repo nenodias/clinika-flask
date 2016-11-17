@@ -4,6 +4,10 @@
     <div class="container">
         <form class="form-horizontal" method="post">
             <fieldset>
+                    
+                {% if mensagem %}
+                <div class="alert alert-{{tipo_mensagem}}" role="alert">{{mensagem}}</div>
+                {% endif %}
 
                 <!-- Form Name -->
                 <legend align="center">Login</legend>

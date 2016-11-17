@@ -60,10 +60,11 @@ def form(pk):
             if pk:
                 dicionario['id'] = pk
                 id_cadastro = _table.update(dicionario,['id'])
-                contexto['mensagem'] = u'Paciente {0} atualizado com sucesso'.format(id_cadastro)
+                flash( u'Paciente {0} atualizado com sucesso'.format(id_cadastro), 'success')
             else:
                 id_cadastro = _table.insert(dicionario,['id'])
-                contexto['mensagem'] = u'Paciente {0} cadastrado com sucesso'.format(id_cadastro)
+                flash( u'Paciente {0} cadastrado com sucesso'.format(id_cadastro), 'success')
+            return redirect(url_for('paciente.index'))
         except:
             contexto['mensagem'] = u'Erro ao cadastrar paciente'
             contexto['tipo_mensagem'] = 'danger'

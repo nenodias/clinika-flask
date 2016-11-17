@@ -7,13 +7,18 @@ from especialidade_blueprint import especialidade_blueprint
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    contexto = {}
     if request.method == 'POST':
         usuario = request.form.get('usuario')
         senha = request.form.get('senha')
         if usuario == 'admin' and senha == '123':
             session['login'] = True
             return redirect(url_for('index'))
-    return render_template('login.html'), 200
+        else:
+            contexto['tipo_mensagem'] = u'danger'
+            contexto['mensagem'] = u'Usuário ou senha inválidos'
+
+    return render_template('login.html', **contexto), 200
 
 
 @app.route('/logout')

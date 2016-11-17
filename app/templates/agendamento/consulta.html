@@ -218,7 +218,7 @@
                     }else{
                         var template = _.template( $("#nenhum").html() );
                         var html = template();
-                        $('.dados-tabela').append(html);
+                        $(dados_tabela).append(html);
                     }
                     if(max_count == count){
                         loaded.resolve('');

@@ -168,20 +168,34 @@
 
                     //Atualizando Tabela
                     var dados = retorno[0];
-                    $('.dados-tabela').html('');
+                    //$('.dados-tabela').html('');
+                    var dados_tabela = document.createElement('tbody');
+                    var loaded = $.Deferred();
                     var template = _.template( $("#linha-template").html() );
+                    var max_count = dados.length;
+                    var count = 0;
                     if(dados.length > 0){
                         _.each(dados, function(linha){
                             var plano = linha['plano'];
                             linha['plano'] = getPlano(plano);
                             var html = template(linha);
-                            $('.dados-tabela').append(html);
+                            $(dados_tabela).append(html);
+                            count++;
+                            if(max_count == count){
+                                loaded.resolve('');
+                            }
                         });
                     }else{
                         var template = _.template( $("#nenhum").html() );
                         var html = template();
-                        $('.dados-tabela').append(html);
+                        $(dados_tabela).append(html);
                     }
+                    if(max_count == count){
+                        loaded.resolve('');
+                    }
+                    loaded.done(function(){
+                        $('.dados-tabela').html( $(dados_tabela).html() );
+                    });
                     //Fim da Atualizacao da Tabela
 
                 })

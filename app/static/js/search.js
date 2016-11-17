@@ -11,6 +11,8 @@
                 labelFieldElement.removeAttribute('id');
                 labelFieldElement.removeAttribute('name');
                 labelFieldElement.removeAttribute('value');
+                labelFieldElement.removeAttribute('required');
+                labelFieldElement.removeAttribute('pattern');
                 labelFieldElement.setAttribute('type','text');
                 labelFieldElement.setAttribute('readonly','readonly');
                 return labelFieldElement;

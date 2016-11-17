@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 from datetime import datetime
-from pdb import set_trace
 from flask import (Blueprint, render_template, request, redirect, url_for, flash, 
     jsonify, render_template, Response)
 from app import auth_require
@@ -109,17 +108,22 @@ def ajax():
 @agendamento_blueprint.route('/count', methods = ['get'])
 @auth_require()
 def count():
-    _descricao = request.args.get('descricao', '')
-    _status = request.args.get('status', '')
+    _id_medico = request.args.get('id_medico', '')
+    _id_paciente = request.args.get('id_paciente', '')
+    _data = request.args.get('data', '')
     items = []
     params = {}
     sql = 'SELECT COUNT(1) as count FROM {0} WHERE 1 = 1 '.format(_table.table.name)
-    if _descricao:
-        params['descricao'] = '%'+_descricao+'%'
-        sql += ' AND descricao like :descricao '
-    if _status:
-        params['status'] = _status
-        sql += ' AND status = :status '
+    if _id_medico:
+        params['id_medico'] = int(_id_medico)
+        sql += ' AND id_medico = :id_medico '
+    if _id_paciente:
+        params['id_paciente'] = int(_id_paciente)
+        sql += ' AND id_paciente = :id_paciente '
+
+    if _data:
+        params['data'] = datetime.strptime(_data, '%Y-%m-%d').date()
+        sql += ' AND data = :data '
     try:
         fetch = db.engine.execute(sql, params)
         colunas = fetch.keys()

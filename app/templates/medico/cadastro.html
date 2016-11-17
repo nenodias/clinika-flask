@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block title %}Cadastro de Médicos{% endblock %}
 {% block content %}
-        <form class="form-horizontal">
+        <form class="form-horizontal" method="post">
             <fieldset>
 
                 <!-- Form Name -->
@@ -149,7 +149,7 @@
                         <span class="input-group-addon">
                             <span class="glyphicon">&#xe145;</span>
                         </span>
-                        <input id="telefone" name="telefone" type="text" value="{{ model['telefone'] }}" placeholder="(99)99999-9999" class="form-control input-md" required="" pattern="([1-9]{2})[1-9]{5}-[1-9]{4}">
+                        <input id="telefone" name="telefone" type="text" value="{{ model['telefone'] }}" placeholder="(99)99999-9999" class="form-control input-md" required="" pattern="[\(]\d{2}[\)]\d{4,5}[\-]\d{4}">
                     </div>
                 </div>
 

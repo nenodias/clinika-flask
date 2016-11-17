@@ -108,7 +108,7 @@ def count():
         params['descricao'] = '%'+_descricao+'%'
         sql += ' AND descricao like :descricao '
     if _status:
-        params['status'] = _status
+        params['status'] = 1 if _status == 'True' else 0
         sql += ' AND status = :status '
     try:
         fetch = db.engine.execute(sql, params)

@@ -119,6 +119,13 @@
                 </td>
             </tr>
         </template>
+        <template id="nenhum">
+            <tr>
+                <td colspan="6">
+                <h4 class="text-center"> Nenhum Resultado Encontrado!</h4>
+                </td>
+            </tr>
+        </template>
         <script type="text/javascript">
             var limit = 10;
             var offset = 0;
@@ -193,20 +200,26 @@
                     var template = _.template( $("#linha-template").html() );
                     var max_count = dados.length;
                     var count = 0;
-                    _.each(dados, function(linha){
-                        var d_medico = getMedico(linha['id_medico']);
-                        var d_paciente = getPaciente(linha['id_medico']);
-                        $.when(d_medico,d_paciente).then(function(medico, paciente){
-                            linha['medico'] = medico;
-                            linha['paciente'] = paciente;
-                            var html = template(linha);
-                            $(dados_tabela).append(html);
-                            count++;
-                            if(max_count == count){
-                                loaded.resolve('');
-                            }
+                    if(dados.length > 0){
+                        _.each(dados, function(linha){
+                            var d_medico = getMedico(linha['id_medico']);
+                            var d_paciente = getPaciente(linha['id_paciente']);
+                            $.when(d_medico,d_paciente).then(function(medico, paciente){
+                                linha['medico'] = medico;
+                                linha['paciente'] = paciente;
+                                var html = template(linha);
+                                $(dados_tabela).append(html);
+                                count++;
+                                if(max_count == count){
+                                    loaded.resolve('');
+                                }
+                            });
                         });
-                    });
+                    }else{
+                        var template = _.template( $("#nenhum").html() );
+                        var html = template();
+                        $('.dados-tabela').append(html);
+                    }
                     if(max_count == count){
                         loaded.resolve('');
                     }

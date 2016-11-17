@@ -22,6 +22,8 @@
                 fieldSearchElement.removeAttribute('id');
                 fieldSearchElement.removeAttribute('name');
                 fieldSearchElement.removeAttribute('value');
+                fieldSearchElement.removeAttribute('required');
+                fieldSearchElement.removeAttribute('pattern');
                 fieldSearchElement.setAttribute('type','text');
                 fieldSearchElement.className += ' nn-search';
                 return fieldSearchElement;

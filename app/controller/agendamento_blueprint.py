@@ -39,7 +39,7 @@ def form(pk):
         dicionario = {
             "id_medico": int(id_medico),
             "id_paciente": int(id_paciente),
-            "data":datetime.strptime(data, '%Y-%m-%d'),
+            "data":datetime.strptime(data, '%Y-%m-%d').date(),
             "hora":hora
         }
         mensagem = None
@@ -100,7 +100,8 @@ def ajax():
         fetch = db.engine.execute(sql, params)
         colunas = fetch.keys()
         for dado in fetch:
-            items.append( dict(zip(colunas, dado)) )
+            item = dict(zip(colunas, dado))
+            items.append( item )
     except Exception as ex:
         print(ex)
     return Response(response=json.dumps( items ), status=200, mimetype="application/json")

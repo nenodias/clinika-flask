@@ -112,6 +112,13 @@
                 </td>
             </tr>
         </template>
+        <template id="nenhum">
+            <tr>
+                <td colspan="8">
+                <h4 class="text-center"> Nenhum Resultado Encontrado!</h4>
+                </td>
+            </tr>
+        </template>
         <script type="text/javascript">
             var limit = 10;
             var offset = 0;
@@ -163,12 +170,18 @@
                     var dados = retorno[0];
                     $('.dados-tabela').html('');
                     var template = _.template( $("#linha-template").html() );
-                    _.each(dados, function(linha){
-                        var plano = linha['plano'];
-                        linha['plano'] = getPlano(plano);
-                        var html = template(linha);
+                    if(dados.length > 0){
+                        _.each(dados, function(linha){
+                            var plano = linha['plano'];
+                            linha['plano'] = getPlano(plano);
+                            var html = template(linha);
+                            $('.dados-tabela').append(html);
+                        });
+                    }else{
+                        var template = _.template( $("#nenhum").html() );
+                        var html = template();
                         $('.dados-tabela').append(html);
-                    });
+                    }
                     //Fim da Atualizacao da Tabela
 
                 })

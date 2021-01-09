@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from app import app, request, render_template, redirect, session, auth_require, url_for
-from medico_blueprint import medico_blueprint
-from paciente_blueprint import paciente_blueprint
-from agendamento_blueprint import agendamento_blueprint
-from especialidade_blueprint import especialidade_blueprint
+from app.controller.medico_blueprint import medico_blueprint
+from app.controller.paciente_blueprint import paciente_blueprint
+from app.controller.agendamento_blueprint import agendamento_blueprint
+from app.controller.especialidade_blueprint import especialidade_blueprint
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
